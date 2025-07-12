@@ -1,0 +1,38 @@
+#ifndef RAY_HPP
+#define RAY_HPP
+
+#include <SFML/Graphics.hpp>
+#include <iostream>
+using namespace std;
+
+
+// When drawing a Ray object, draw from start either to the finishing point, 
+// or to the point in collision.
+class Ray{
+    const static short unsigned pointNumber = 10u;  // Number of points that the ray is "composed of"
+
+    private:
+        void calculatePointDistance();
+        void calculatePointsArray();
+
+        double length;
+        sf::Vector2f pointDistance;     // Distance from one point in the ray to the next
+        sf::Vector2f points[pointNumber];
+    
+    public:
+        sf::Vector2f start;
+        sf::Vector2f finish;
+
+        short unsigned pointInCollision;    // Index of the point which collided with an object
+
+        Ray(sf::Vector2f start, sf::Vector2f finish);
+        Ray(sf::Vector2f start, double angleDegrees, double lineOfSight);
+        Ray(Ray& other);
+        
+        void castIt(vector<sf::Drawable&> colliders);
+
+        sf::VertexArray makeDrawable();
+};
+
+
+#endif
