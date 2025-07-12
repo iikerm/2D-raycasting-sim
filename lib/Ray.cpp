@@ -1,4 +1,4 @@
-#include "Ray.hpp"
+#include "../include/Ray.hpp"
 using namespace std;
 
 void Ray::calculatePointDistance(){
@@ -75,7 +75,7 @@ Ray::Ray(Ray& other){
 }
 
 
-void Ray::castIt(vector<sf::Drawable&> colliders){
+void Ray::castIt(vector<sf::Drawable*> colliders){
     /*Suggested performance optimizations:
         - Use a priority queue that orders each collider according to their distance from the start
           (so that we find a collision early and avoid checking most of the colliders).
@@ -89,12 +89,12 @@ void Ray::castIt(vector<sf::Drawable&> colliders){
     for (long unsigned i=0; i<colliders.size(); i++){
 
         try{
-            sf::RectangleShape collider = dynamic_cast<sf::RectangleShape&>(colliders[i]);
-            colliderBounds = collider.getGlobalBounds();
+            sf::RectangleShape* collider = dynamic_cast<sf::RectangleShape*>(colliders[i]);
+            colliderBounds = collider->getGlobalBounds();
         }catch(bad_cast){
             try{
-                sf::CircleShape collider = dynamic_cast<sf::CircleShape&>(colliders[i]);
-                colliderBounds = collider.getGlobalBounds();
+                sf::CircleShape* collider = dynamic_cast<sf::CircleShape*>(colliders[i]);
+                colliderBounds = collider->getGlobalBounds();
             }catch(bad_cast){
                 cout << "Ignored collider because of unsupported Drawable subclass" << endl;
                 continue;

@@ -29,7 +29,7 @@ class Ray{
         Ray(sf::Vector2f start, double angleDegrees, double lineOfSight);
         Ray(Ray& other);
         
-        void castIt(vector<sf::Drawable&> colliders);
+        void castIt(vector<sf::Drawable*> colliders);
 
         sf::VertexArray makeDrawable();
 };
