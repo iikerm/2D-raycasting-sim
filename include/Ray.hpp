@@ -9,8 +9,11 @@ using namespace std;
 // When drawing a Ray object, draw from start either to the finishing point, 
 // or to the point in collision.
 class Ray{
+
+    friend class Camera;
     
     private:
+        Ray();      // Default constructor should not be public
         void calculatePointDistance();
         void calculatePointsArray();
         

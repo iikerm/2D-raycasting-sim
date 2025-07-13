@@ -2,6 +2,14 @@
 #include <cmath>
 using namespace std;
 
+
+Ray::Ray(){
+    start = sf::Vector2f(0,0);
+    finish = start;
+    calculatePointDistance();
+    calculatePointsArray();
+}
+
 void Ray::calculatePointDistance(){
     pointDistance = sf::Vector2f(
         (finish.x - start.x) / (double)(pointNumber),
