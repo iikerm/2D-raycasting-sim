@@ -9,9 +9,9 @@ FILES=$(patsubst %,$(LIBDIR)/%,$(_FILES))
 
 
 main: src/main.cpp $(FILES)
-	g++ src/main.cpp -I $(INCLUDEDIR) $(OPTS) $(SFML_OPTS) -o bin/main
+	g++ src/main.cpp -I $(INCLUDEDIR) $(FILES) $(OPTS) $(SFML_OPTS) -o bin/main
 
-$(LIBDIR)/%.o : $(LIBDIR)/%.cpp $(INCLUDEDIR)/%.h
+$(LIBDIR)/%.o : $(LIBDIR)/%.cpp $(INCLUDEDIR)/%.hpp
 	g++ $(OPTS) $(SFML_OPTS) -c -I $(INCLUDEDIR) -o $@ $<
 
 tests: src/tests.cpp
