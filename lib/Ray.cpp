@@ -3,9 +3,15 @@ using namespace std;
 
 void Ray::calculatePointDistance(){
     pointDistance = sf::Vector2f(
-        (finish.x - start.x) / (double)pointNumber-1,
-        (finish.y - start.y) / (double)pointNumber-1
+        (finish.x - start.x) / (double)(pointNumber),
+        (finish.y - start.y) / (double)(pointNumber)
     );
+    cout << pointNumber << " points" << endl;
+    cout << "Math: (" << finish.x << " - " << start.x << ") / " << pointNumber << " = " << pointDistance.x << endl;
+    cout << "Math: (" << finish.y << " - " << start.y << ") / " << pointNumber << " = " << pointDistance.y << endl;
+    cout << "Start: " << start.x << "x" << start.y << endl;
+    cout << "End: " << finish.x << "x" << finish.y << endl;
+    cout << "Point distance: " << pointDistance.x << "x" << pointDistance.y << endl;
 }
 
 void Ray::calculatePointsArray(){
@@ -13,7 +19,7 @@ void Ray::calculatePointsArray(){
     points[0] = start;
 
     for (short unsigned i=1; i<pointNumber; i++){
-        points[i] = sf::Vector2f(i*pointDistance.x, i*pointDistance.y);
+        points[i] = start + sf::Vector2f(i*pointDistance.x, i*pointDistance.y);
     }
 }
 
@@ -75,6 +81,17 @@ Ray::Ray(Ray& other){
 }
 
 
+void Ray::move(sf::Vector2f offset){
+    this->start += offset;
+    this->finish += offset;
+
+    // No need to recalculate point distance because 
+    // the distance between start and finish has not changed
+    
+    calculatePointsArray();
+}
+
+
 void Ray::castIt(vector<sf::Drawable*> colliders){
     /*Suggested performance optimizations:
         - Use a priority queue that orders each collider according to their distance from the start
@@ -103,7 +120,12 @@ void Ray::castIt(vector<sf::Drawable*> colliders){
 
         for (short unsigned i=0; i<pointNumber; i++){
             if (colliderBounds.contains(points[i])){
-                pointInCollision = i;
+                pointInCollision = i-1;
+
+                if (pointInCollision<0){
+                    pointInCollision = 0;
+                }
+
                 return;
             }else{
                 pointInCollision = pointNumber-1;
@@ -114,7 +136,9 @@ void Ray::castIt(vector<sf::Drawable*> colliders){
 
 sf::VertexArray Ray::makeDrawable(){
     sf::VertexArray tempVertexArray(sf::Lines, 2);
+
     tempVertexArray[0] = points[0];
     tempVertexArray[1] = points[pointInCollision];
+    
     return tempVertexArray;
 }

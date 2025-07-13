@@ -9,17 +9,17 @@ using namespace std;
 // When drawing a Ray object, draw from start either to the finishing point, 
 // or to the point in collision.
 class Ray{
-    const static short unsigned pointNumber = 10u;  // Number of points that the ray is "composed of"
-
+    
     private:
         void calculatePointDistance();
         void calculatePointsArray();
-
+        
         double length;
         sf::Vector2f pointDistance;     // Distance from one point in the ray to the next
-        sf::Vector2f points[pointNumber];
-    
+        
     public:
+        const static short unsigned pointNumber = 300u;  // Number of points that the ray is "composed of"
+        sf::Vector2f points[pointNumber];
         sf::Vector2f start;
         sf::Vector2f finish;
 
@@ -29,6 +29,7 @@ class Ray{
         Ray(sf::Vector2f start, double angleDegrees, double lineOfSight);
         Ray(Ray& other);
         
+        void move(sf::Vector2f offset);
         void castIt(vector<sf::Drawable*> colliders);
 
         sf::VertexArray makeDrawable();
