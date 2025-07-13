@@ -46,39 +46,11 @@ Ray::Ray(sf::Vector2f start, sf::Vector2f finish){
 
 Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight){
     this->start = start;
-    this->finish = start;
-
-    sf::RectangleShape tempRect(sf::Vector2f(1, lineOfSight));
-    tempRect.setPosition(start);
-    tempRect.rotate(angleDegrees);
-    
-    // So that the angle is in [0-360]
-    angleDegrees = tempRect.getRotation();
-
-    if (angleDegrees <= 180){
-        finish.x = start.x - tempRect.getGlobalBounds().width;
-    }else{
-        finish.x = start.x + tempRect.getGlobalBounds().width;
-    }
-
-    if (angleDegrees <= 90 && angleDegrees >= 270){
-        finish.y = start.y + tempRect.getGlobalBounds().height;
-    }else{
-        finish.y = start.y - tempRect.getGlobalBounds().height;
-    }
-
-
-    // So we will render only what we are seeing
-    if (finish.x > lineOfSight){
-        finish.x = lineOfSight;
-    }
-    if (finish.y > lineOfSight){
-        finish.y = lineOfSight;
-    }
+    this->finish = start + sf::Vector2f(lineOfSight, lineOfSight);
 
     pointInCollision = pointNumber-1;
-    calculatePointDistance();
-    calculatePointsArray();
+    
+    this->rotateDegrees(angleDegrees);
 }
 
 Ray::Ray(Ray& other){
