@@ -2,7 +2,7 @@
 using namespace std;
 
 int main(){
-    Ray testRay = Ray(sf::Vector2f(100, 100), sf::Vector2f(100, 1000));
+    Ray testRay = Ray(sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1300));
     
     sf::RectangleShape a = sf::RectangleShape(sf::Vector2f(100, 100));
     a.setPosition(50, 200);
@@ -18,6 +18,12 @@ int main(){
 
     vector<sf::Drawable*> colliders = {&a, &b, &c};
 
+    sf::CircleShape circle(300, 30ul);
+    circle.setPosition(sf::Vector2f(700, 700));
+    circle.setOutlineColor(sf::Color::Cyan);
+    circle.setFillColor(sf::Color::Transparent);
+    circle.setOutlineThickness(5);
+
 
     sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
 
@@ -29,12 +35,31 @@ int main(){
             }
         }
 
+        // Direction controls
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             testRay.move(sf::Vector2f(-2, 0));
         }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
             testRay.move(sf::Vector2f(2, 0));
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+            testRay.move(sf::Vector2f(0, -2));
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+            testRay.move(sf::Vector2f(0, 2));
+        }
+
+
+        // Rotation controls
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+            testRay.rotateDegrees(1);
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+            testRay.rotateDegrees(-1);
         }
 
         testRay.castIt(colliders);
@@ -51,6 +76,8 @@ int main(){
             tc.setFillColor(sf::Color(i*20, 10*i, 255 - 20*i));
             win.draw(tc);
         }*/
+
+        win.draw(circle);
 
         win.draw(testRay.makeDrawable());
 

@@ -30,6 +30,7 @@ class Ray{
         Ray(Ray& other);
         
         void move(sf::Vector2f offset);
+        void rotateDegrees(double angle);
         void castIt(vector<sf::Drawable*> colliders);
 
         sf::VertexArray makeDrawable();
