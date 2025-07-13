@@ -13,7 +13,6 @@ class Ray{
     friend class Camera;
     
     private:
-        Ray();      // Default constructor should not be public
         void calculatePointDistance();
         void calculatePointsArray();
         
@@ -25,9 +24,10 @@ class Ray{
         sf::Vector2f points[pointNumber];
         sf::Vector2f start;
         sf::Vector2f finish;
-
+        
         short unsigned pointInCollision;    // Index of the point which collided with an object
-
+        
+        Ray();
         Ray(sf::Vector2f start, sf::Vector2f finish);
         Ray(sf::Vector2f start, double angleDegrees, double lineOfSight);
         Ray(Ray& other);
