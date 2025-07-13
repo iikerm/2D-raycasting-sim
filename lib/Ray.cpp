@@ -117,9 +117,12 @@ void Ray::rotateDegrees(double angle){
 
 void Ray::castIt(vector<sf::Drawable*> colliders){
     /*Suggested performance optimizations:
+
+        DO THIS ONE TO FIX TRANSPARENT COLLIDER PROBLEM
         - Use a priority queue that orders each collider according to their distance from the start
           (so that we find a collision early and avoid checking most of the colliders).
         
+        Would not fix transparent collider problem
         - Use a priority queue that orders each collider according to their surface area (bigger
           colliders have a higher chance to cause a collision).
     */
