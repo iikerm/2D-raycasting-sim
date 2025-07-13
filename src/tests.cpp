@@ -19,7 +19,7 @@ int main(){
     viewLaser.setPosition(sf::Vector2f(0, 0));
 
     sf::RectangleShape diag(sf::Vector2f(1, 350));
-    diag.setFillColor(sf::Color::Red);       // #fd9210
+    diag.setFillColor(sf::Color::Red);
     diag.setPosition(sf::Vector2f(400, 100));
 
     sf::RectangleShape diag2(sf::Vector2f(-400, -400));
