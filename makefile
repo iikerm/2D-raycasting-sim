@@ -4,7 +4,7 @@ SFML_OPTS=-lsfml-system -lsfml-window -lsfml-graphics
 LIBDIR=lib
 INCLUDEDIR=include
 
-_FILES=Ray.o
+_FILES=Ray.o Camera.o
 FILES=$(patsubst %,$(LIBDIR)/%,$(_FILES))
 
 
