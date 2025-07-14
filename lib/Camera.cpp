@@ -65,11 +65,14 @@ void Camera::rotate(double angle){
     }
 }
 
-
-void Camera::castRays(vector<sf::Drawable*> &colliders){
+// Maybe change sf::RectangleShape into sf::VertexArray or something similar for more flexibility.
+// Perhaps making an overload that accepts a vector of sf::VertexArray??
+void Camera::castRays(vector<sf::RectangleShape*> &colliders){
+    view[0].sortColliders(colliders);
     for (short unsigned i=0; i<view.size(); i++){
-        view[i].castIt(vector<sf::Drawable*>(colliders));
+        view[i].castIt(vector<sf::RectangleShape*>(colliders));
     }
+    
 }
 
 void Camera::drawIn(sf::RenderWindow &window){
