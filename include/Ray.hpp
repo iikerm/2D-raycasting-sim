@@ -34,7 +34,9 @@ class Ray{
         
         void move(sf::Vector2f offset);
         void rotateDegrees(double angle);
-        void castIt(vector<sf::Drawable*> colliders);
+        void sortColliders(vector<sf::RectangleShape*> &colliders);
+
+        void castIt(vector<sf::RectangleShape*> colliders);
 
         sf::VertexArray makeDrawable();
 };

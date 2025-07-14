@@ -1,5 +1,6 @@
 #include "../include/Ray.hpp"
 #include <cmath>
+#include <queue>
 using namespace std;
 
 
@@ -115,36 +116,45 @@ void Ray::rotateDegrees(double angle){
 }
 
 
-void Ray::castIt(vector<sf::Drawable*> colliders){
-    /*Suggested performance optimizations:
-
-        DO THIS ONE TO FIX TRANSPARENT COLLIDER PROBLEM
-        - Use a priority queue that orders each collider according to their distance from the start
-          (so that we find a collision early and avoid checking most of the colliders).
-        
-        Would not fix transparent collider problem
-        - Use a priority queue that orders each collider according to their surface area (bigger
-          colliders have a higher chance to cause a collision).
+/**
+ * This method is intended to be called from an instance of the Camera class, so that the colliders 
+ * vector only has to be ordered once for a group of rays.
+ * This works because all the rays coming out of a Camera will have the same starting point
+ */
+void Ray::sortColliders(vector<sf::RectangleShape*> &colliders){
+    /*
+    We order the colliders vector from nearest (first) to furthest away (last) from the
+    starting point of the ray. This ensures that most rays will perform few iterations of the 
+    following loops because they are more probable to find a collision early on.
     */
 
+    sort(colliders.begin(), colliders.end(), 
+        [this](sf::RectangleShape *a, sf::RectangleShape *b){
+            return sqrt(pow(a->getPosition().x - this->start.x, 2) + pow(a->getPosition().y - this->start.y, 2)) 
+                    < sqrt(pow(b->getPosition().x - this->start.x, 2) + pow(b->getPosition().y - this->start.y, 2));
+        });
+}
+
+
+/**
+ * Calculates the ray's collision with the first object of the list that comes across its path.
+ * If using outside of a Camera method, call Ray::sortColliders method first for better performance.
+ */
+void Ray::castIt(vector<sf::RectangleShape*> colliders){
     sf::FloatRect colliderBounds;
 
     for (long unsigned i=0; i<colliders.size(); i++){
 
-        try{
-            sf::RectangleShape* collider = dynamic_cast<sf::RectangleShape*>(colliders[i]);
+        sf::RectangleShape* collider = dynamic_cast<sf::RectangleShape*>(colliders[i]);
+        if (collider != NULL){
             colliderBounds = collider->getGlobalBounds();
-        }catch(bad_cast){
-            try{
-                sf::CircleShape* collider = dynamic_cast<sf::CircleShape*>(colliders[i]);
-                colliderBounds = collider->getGlobalBounds();
-            }catch(bad_cast){
-                cerr << "Ignored collider because of unsupported Drawable subclass" << endl;
-                continue;
-            }
+        }else{
+            cerr << "Ignored collider in position " << i 
+                 << " because of unsupported sf::Drawable subclass" << endl;
+            continue;
         }
-
-        for (int i=0; i<pointNumber; i++){
+        
+        for (unsigned short i=0; i<pointNumber-1; i++){
             if (colliderBounds.contains(points[i])){
                 
                 if (i==0){
