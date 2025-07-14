@@ -25,7 +25,7 @@ int main(){
     circle.setFillColor(sf::Color::Transparent);
     circle.setOutlineThickness(5);
 
-    vector<sf::Drawable*> colliders = {&a, &b, &c};
+    vector<sf::RectangleShape*> colliders = {&a, &b, &c};
 
 
     sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
