@@ -22,7 +22,7 @@ void Camera::setupRays(){
 }
 
 void Camera::setupBody(){
-    body = sf::CircleShape(viewLength/10, 30ul);
+    body = sf::CircleShape(100, 30ul);
     body.setPosition(pos - sf::Vector2f(body.getRadius(), body.getRadius()));
 
     body.setFillColor(sf::Color(253, 146, 16));       // #fd9210

@@ -20,8 +20,8 @@ class Ray{
         sf::Vector2f pointDistance;     // Distance from one point in the ray to the next
         
     public:
-        const static short unsigned pointNumber = 300u;  // Number of points that the ray is "composed of"
-        sf::Vector2f points[pointNumber];
+        const static short unsigned pointNumber = 800u;  // Number of points that the ray is "composed of"
+        vector<sf::Vector2f> points;
         sf::Vector2f start;
         sf::Vector2f finish;
         

@@ -4,7 +4,7 @@ using namespace std;
 
 int main(){
     // Ray testRay = Ray(sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1300));
-    Camera testCamera = Camera(sf::Vector2f(1000, 1000), 45, 400, 320u);
+    Camera testCamera = Camera(sf::Vector2f(1000, 1000), 30, 1000, 320u);
     testCamera.rotate(45);
     
     sf::RectangleShape a = sf::RectangleShape(sf::Vector2f(100, 100));
@@ -29,8 +29,21 @@ int main(){
 
 
     sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
+    sf::Clock fpsClock;
+    fpsClock.restart();
+
+    int fpsCount = 0;
 
     while(win.isOpen()){
+        fpsCount++;
+
+        if (fpsCount == 500){
+            unsigned t = fpsClock.getElapsedTime().asMilliseconds();
+            cout << t << "s since last frame (" << 500.f / (double)(t * 1.f/1000.f) << "fps)" << endl;
+            fpsCount = 0;
+            fpsClock.restart();
+        }
+
         sf::Event event;
         while (win.pollEvent(event)){
             if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))){

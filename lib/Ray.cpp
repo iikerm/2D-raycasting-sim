@@ -4,13 +4,6 @@
 using namespace std;
 
 
-Ray::Ray(){
-    start = sf::Vector2f(0,0);
-    finish = start;
-    calculatePointDistance();
-    calculatePointsArray();
-}
-
 void Ray::calculatePointDistance(){
     pointDistance = sf::Vector2f(
         (finish.x - start.x) / (double)(pointNumber),
@@ -30,16 +23,27 @@ void Ray::calculatePointsArray(){
 
     points[0] = start;
 
-    for (short unsigned i=1; i<pointNumber; i++){
+    for (short unsigned i=1; i<points.size(); i++){
         points[i] = start + sf::Vector2f(i*pointDistance.x, i*pointDistance.y);
     }
 }
 
 
+Ray::Ray(){
+    start = sf::Vector2f(0,0);
+    finish = start;
+
+    this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
+
+    calculatePointDistance();
+    calculatePointsArray();
+}
+
 Ray::Ray(sf::Vector2f start, sf::Vector2f finish){
     this->start = start;
     this->finish = finish;
 
+    this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
     pointInCollision = pointNumber-1;
     calculatePointDistance();
     calculatePointsArray();
@@ -49,6 +53,7 @@ Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight){
     this->start = start;
     this->finish = start + sf::Vector2f(lineOfSight, lineOfSight);
 
+    this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
     pointInCollision = pointNumber-1;
     
     this->rotateDegrees(angleDegrees);
@@ -58,6 +63,7 @@ Ray::Ray(Ray& other){
     this->start = other.start;
     this->finish = other.finish;
 
+    this->points = other.points;
     calculatePointDistance();
     calculatePointsArray();
 
@@ -131,7 +137,7 @@ void Ray::sortColliders(vector<sf::RectangleShape*> &colliders){
     sort(colliders.begin(), colliders.end(), 
         [this](sf::RectangleShape *a, sf::RectangleShape *b){
             return sqrt(pow(a->getPosition().x - this->start.x, 2) + pow(a->getPosition().y - this->start.y, 2)) 
-                    < sqrt(pow(b->getPosition().x - this->start.x, 2) + pow(b->getPosition().y - this->start.y, 2));
+                   < sqrt(pow(b->getPosition().x - this->start.x, 2) + pow(b->getPosition().y - this->start.y, 2));
         });
 }
 
