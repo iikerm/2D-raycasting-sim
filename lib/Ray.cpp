@@ -125,6 +125,59 @@ void Ray::rotateDegrees(double angle){
 
 
 /**
+ * It is meant to be an improvement from rotateDegrees. 
+ * By pre-computing the value of sin(-1°) and cos(-1°), some computation will be avoided, more so
+ * when this process is done for multiple rays. 
+ * This method is equivalent to using rotateDegrees(1).
+ */
+void Ray::rotateInStep(bool negativeStep){
+    // Pre-computed values using python math.sin(), math.cos(), and math.radians() functions
+    double sin_minus1_deg = -0.01745240643728351;
+    constexpr double cos_minus1_deg = 0.9998476951563913;
+
+    // If we want to rotate in the other direction:
+    if (negativeStep){
+        sin_minus1_deg = -1 * sin_minus1_deg;
+        // cos doesn't change depending on the sign of the angle
+    }
+
+    // The rest of the process is the same as in the rotateDegrees method
+
+     sf::Vector2f tempFinish = finish - start;
+
+    finish = sf::Vector2f(
+        tempFinish.x * cos_minus1_deg - tempFinish.y * sin_minus1_deg,
+        tempFinish.x * sin_minus1_deg + tempFinish.y * cos_minus1_deg
+    );
+
+    finish += start;
+
+    calculatePointDistance();
+    calculatePointsArray();
+}
+
+/**
+ * Method that will rotate the ray by the specified angle in degrees. 
+ * It unifies the rotateDegrees() and rotateInStep() methods and decides which one is best to use.
+ */
+void Ray::rotate(double angle){
+
+    if (angle == 0){
+        return;
+    }
+
+    if (angle == static_cast<int>(angle)){
+        // If the angle is a whole number, rotateInStep is more efficient
+        for (int i=0; i<abs(angle); i++){
+            this->rotateInStep(angle<0);
+        }
+    }else{
+        this->rotateDegrees(angle);
+    }
+}
+
+
+/**
  * This method is intended to be called from an instance of the Camera class, so that the colliders 
  * vector only has to be ordered once for a group of rays.
  * This works because all the rays coming out of a Camera will have the same starting point

@@ -66,7 +66,7 @@ void Camera::move(sf::Vector2f offset){
 
 void Camera::rotate(double angle){
     for (short unsigned i=0; i<view.size(); i++){
-        view[i]->rotateDegrees(angle);
+        view[i]->rotate(angle);
     }
 }
 
