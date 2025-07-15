@@ -22,7 +22,7 @@ class Camera{
     void setupBody();
     
     public:
-        vector<Ray> view;
+        vector<Ray*> view;
         const static double defaultViewAngle;
         const static double defaultViewLength;
         const static unsigned short defaultRayAmount;
@@ -32,6 +32,8 @@ class Camera{
             double viewAngle = defaultViewAngle,
             double viewLength = defaultViewLength,
             unsigned short rayAmount = defaultRayAmount);
+        
+        ~Camera();
             
         void move(sf::Vector2f offset);
         void rotate(double angle);

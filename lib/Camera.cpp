@@ -4,19 +4,25 @@ const double Camera::defaultViewAngle = 45.F;
 const double Camera::defaultViewLength = 100.F;
 const unsigned short Camera::defaultRayAmount = 100u;
 
+Camera::~Camera(){
+    for (unsigned short i=0; i<view.size(); i++){
+        delete view[i];
+    }
+}
+
 
 void Camera::setupRays(){
     double angleStep = viewAngle / rayAmount;
-
-    view = vector<Ray>(rayAmount);
-
+    
+    view = vector<Ray*>(rayAmount);
+    
     Ray tempRay(pos, pos - sf::Vector2f(0, viewLength));
     
     // So that the camera starts facing correctly in a single direction
     tempRay.rotateDegrees(-viewAngle/2);
 
     for (unsigned short i=0; i<rayAmount; i++){
-        view[i] = Ray(tempRay);
+        view[i] = new Ray(tempRay);
         tempRay.rotateDegrees(angleStep);
     }
 }
@@ -54,30 +60,30 @@ Camera::Camera(sf::Vector2f pos,
     
 void Camera::move(sf::Vector2f offset){
     for (short unsigned i=0; i<view.size(); i++){
-        view[i].move(offset);
+        view[i]->move(offset);
     }
     body.setPosition(body.getPosition() + offset);
 }
 
 void Camera::rotate(double angle){
     for (short unsigned i=0; i<view.size(); i++){
-        view[i].rotateDegrees(angle);
+        view[i]->rotateDegrees(angle);
     }
 }
 
 // Maybe change sf::RectangleShape into sf::VertexArray or something similar for more flexibility.
 // Perhaps making an overload that accepts a vector of sf::VertexArray??
 void Camera::castRays(vector<sf::RectangleShape*> &colliders){
-    view[0].sortColliders(colliders);
+    view[0]->sortColliders(colliders);
     for (short unsigned i=0; i<view.size(); i++){
-        view[i].castIt(vector<sf::RectangleShape*>(colliders));
+        view[i]->castIt(vector<sf::RectangleShape*>(colliders));
     }
     
 }
 
 void Camera::drawIn(sf::RenderWindow &window){
     for (short unsigned i=0; i<view.size(); i++){
-        window.draw(view[i].makeDrawable());
+        window.draw(view[i]->makeDrawable());
     }
     window.draw(body);
 }

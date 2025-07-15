@@ -23,7 +23,7 @@ void Ray::calculatePointsArray(){
 
     points[0] = start;
 
-    for (short unsigned i=1; i<points.size(); i++){
+    for (short unsigned i=1; i<pointNumber; i++){
         points[i] = start + sf::Vector2f(i*pointDistance.x, i*pointDistance.y);
     }
 }
@@ -33,7 +33,7 @@ Ray::Ray(){
     start = sf::Vector2f(0,0);
     finish = start;
 
-    this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
+    // this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
 
     calculatePointDistance();
     calculatePointsArray();
@@ -43,7 +43,7 @@ Ray::Ray(sf::Vector2f start, sf::Vector2f finish){
     this->start = start;
     this->finish = finish;
 
-    this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
+    // this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
     pointInCollision = pointNumber-1;
     calculatePointDistance();
     calculatePointsArray();
@@ -53,7 +53,7 @@ Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight){
     this->start = start;
     this->finish = start + sf::Vector2f(lineOfSight, lineOfSight);
 
-    this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
+    // this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
     pointInCollision = pointNumber-1;
     
     this->rotateDegrees(angleDegrees);
@@ -63,10 +63,11 @@ Ray::Ray(Ray& other){
     this->start = other.start;
     this->finish = other.finish;
 
-    this->points = other.points;
-    calculatePointDistance();
-    calculatePointsArray();
+    for (int i=0; i<pointNumber; i++){
+        this->points[i] = other.points[i];
+    }
 
+    this->pointDistance = other.pointDistance;
     this->pointInCollision = other.pointInCollision;
 }
 
