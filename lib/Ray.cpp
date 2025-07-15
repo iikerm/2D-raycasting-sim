@@ -63,10 +63,11 @@ Ray::Ray(Ray& other){
     this->start = other.start;
     this->finish = other.finish;
 
-    for (int i=0; i<pointNumber; i++){
+    /*for (int i=0; i<pointNumber; i++){
         this->points[i] = other.points[i];
-    }
+    }*/
 
+    calculatePointsArray();
     this->pointDistance = other.pointDistance;
     this->pointInCollision = other.pointInCollision;
 }

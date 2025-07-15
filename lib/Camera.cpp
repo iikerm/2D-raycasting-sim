@@ -16,14 +16,13 @@ void Camera::setupRays(){
     
     view = vector<Ray*>(rayAmount);
     
-    Ray tempRay(pos, pos - sf::Vector2f(0, viewLength));
     
-    // So that the camera starts facing correctly in a single direction
-    tempRay.rotateDegrees(-viewAngle/2);
-
     for (unsigned short i=0; i<rayAmount; i++){
-        view[i] = new Ray(tempRay);
-        tempRay.rotateDegrees(angleStep);
+        view[i] = new Ray(pos, pos - sf::Vector2f(0, viewLength));
+        
+        // This makes it so that the camera starts facing correctly in a single 
+        // direction, and the next rays are generated from that initial angle
+        view[i]->rotateDegrees(-viewAngle/2 + i*angleStep);
     }
 }
 
