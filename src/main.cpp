@@ -35,11 +35,12 @@ int main(){
     int fpsCount = 0;
 
     while(win.isOpen()){
+        
+        // Shows FPS (for performance improvements)
         fpsCount++;
-
-        if (fpsCount == 500){
+        if (fpsCount == 100){
             unsigned t = fpsClock.getElapsedTime().asMilliseconds();
-            cout << t << "s since last frame (" << 500.f / (double)(t * 1.f/1000.f) << "fps)" << endl;
+            cout << t << "ms since last frame (" << 100.f / (double)(t * 1.f/1000.f) << "fps)" << endl;
             fpsCount = 0;
             fpsClock.restart();
         }
