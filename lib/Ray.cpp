@@ -222,28 +222,27 @@ void Ray::sortColliders(vector<sf::RectangleShape*> &colliders){
 void Ray::castIt(vector<sf::RectangleShape*> colliders){
     sf::FloatRect colliderBounds;
 
-    for (long unsigned i=0; i<colliders.size(); i++){
+    for (short unsigned i=0; i<pointNumber-1; i++){
+        for (long unsigned j=0; j<colliders.size(); j++){
 
-        sf::RectangleShape* collider = dynamic_cast<sf::RectangleShape*>(colliders[i]);
-        if (collider != NULL){
-            colliderBounds = collider->getGlobalBounds();
-        }else{
-            cerr << "Ignored collider in position " << i 
-                 << " because of unsupported sf::Drawable subclass" << endl;
-            continue;
-        }
-        
-        for (unsigned short i=0; i<pointNumber-1; i++){
-            if (colliderBounds.contains(points[i])){
-                
-                if (i==0){
-                    pointInCollision = 0;
-                }else{
-                    pointInCollision = i-1;
-                }
+            if (points[i].x < 0 || points[i].y < 0 
+                        || points[i].x > winSize.x || points[i].y > winSize.y){
+                pointInCollision = i-1;
                 return;
+                // This branch can't finish because it must check if there is a collision with a collider
             }else{
-                pointInCollision = pointNumber-1;
+                colliderBounds = colliders[j]->getGlobalBounds();
+                
+                if(colliderBounds.contains(points[i])){
+                    if (i==0){
+                        pointInCollision = 0;
+                    }else{
+                        pointInCollision = i-1;
+                    }
+                    return;
+                }else{
+                    pointInCollision = pointNumber-1;
+                }
             }
         }
     }
