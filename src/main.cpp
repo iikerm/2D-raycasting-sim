@@ -3,7 +3,7 @@
 using namespace std;
 
 // Distance moved by the camera for every frame where the necessary key is pressed
-constexpr double DISTANCE_MOVED = 8;
+constexpr double DISTANCE_MOVED = 20;
 
 // Angle by which the camera will rotate for every frame where the necessary key is pressed
 constexpr double ANGLE_ROTATED = 2;
@@ -65,6 +65,9 @@ int main(){
     sf::Clock fpsClock;
     fpsClock.restart();
 
+    sf::Clock moveClock;
+    moveClock.restart();
+
     // true if the rays should be casted in the current iteration 
     // (starts as true so they are casted in the first iteration)
     bool castRaysNow = true;
@@ -90,21 +93,24 @@ int main(){
         }
 
         // Direction controls
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-            testCamera.move(sf::Vector2f(-DISTANCE_MOVED, 0), colliders);
-            castRaysNow = true;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-            testCamera.move(sf::Vector2f(DISTANCE_MOVED, 0), colliders);
-            castRaysNow = true;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-            testCamera.move(sf::Vector2f(0, -DISTANCE_MOVED), colliders);
-            castRaysNow = true;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-            testCamera.move(sf::Vector2f(0, DISTANCE_MOVED), colliders);
-            castRaysNow = true;
+        if (moveClock.getElapsedTime().asMicroseconds() > 10000){
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+                testCamera.move(sf::Vector2f(-DISTANCE_MOVED, 0), colliders);
+                castRaysNow = true;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+                testCamera.move(sf::Vector2f(DISTANCE_MOVED, 0), colliders);
+                castRaysNow = true;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+                testCamera.move(sf::Vector2f(0, -DISTANCE_MOVED), colliders);
+                castRaysNow = true;
+            }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+                testCamera.move(sf::Vector2f(0, DISTANCE_MOVED), colliders);
+                castRaysNow = true;
+            }
+            moveClock.restart();
         }
 
 

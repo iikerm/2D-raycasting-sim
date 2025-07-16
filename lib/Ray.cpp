@@ -8,23 +8,9 @@ using namespace std;
  * will check for any collision).
  */
 void Ray::calculatePointDistance(){
-    sf::Vector2f tempFinish = finish;
-    
-    bool finishOutsideWindow = (finish.x < 0 || finish.y < 0 || finish.x > winSize.x || finish.y > winSize.y);
-    if (finishOutsideWindow){ 
-        while (finishOutsideWindow){
-            tempFinish -= ((finish - start) / (pointNumber/5.f));
-            finishOutsideWindow = (tempFinish.x < 0 
-                || tempFinish.y < 0 
-                || tempFinish.x > winSize.x 
-                || tempFinish.y > winSize.y);
-        }
-        tempFinish += ((finish - start) / (pointNumber/5.f));
-    }
-
     pointDistance = sf::Vector2f(
-        (tempFinish.x - start.x) / (double)(pointNumber),
-        (tempFinish.y - start.y) / (double)(pointNumber)
+        (finish.x - start.x) / (double)(pointNumber),
+        (finish.y - start.y) / (double)(pointNumber)
     );
 }
 
@@ -32,7 +18,6 @@ void Ray::calculatePointDistance(){
  * Calculates the positions of all the points in the ray.
  */
 void Ray::calculatePointsArray(){
-
     points[0] = start;
 
     for (short unsigned i=1; i<pointNumber; i++){
