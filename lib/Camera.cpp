@@ -1,6 +1,6 @@
 #include "Camera.hpp"
 
-const double Camera::defaultViewAngle = 45.F;
+const double Camera::defaultViewAngle = 30.F;
 const double Camera::defaultViewLength = 100.F;
 const unsigned short Camera::defaultRayAmount = 100u;
 
@@ -39,6 +39,8 @@ Camera::Camera(){
     viewLength = defaultViewLength;
     rayAmount = defaultRayAmount;
 
+    this->rotation = 0;
+
     setupBody();
     setupRays();
 }
@@ -52,6 +54,8 @@ Camera::Camera(sf::Vector2f pos,
     this->viewAngle = viewAngle;
     this->viewLength = viewLength;
     this->rayAmount = rayAmount;
+
+    this->rotation = 0;
 
     setupBody();
     setupRays();
@@ -68,6 +72,8 @@ void Camera::rotate(double angle){
     for (short unsigned i=0; i<view.size(); i++){
         view[i]->rotate(angle);
     }
+
+    this->rotation += angle;
 }
 
 // Maybe change sf::RectangleShape into sf::VertexArray or something similar for more flexibility.

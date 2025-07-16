@@ -11,15 +11,17 @@ using namespace std;
  */
 class Camera{
     private:
-    sf::Vector2f pos;
-    double viewAngle;       // How wide the camera sees
-    double viewLength;      // How far the camera sees
-    unsigned short rayAmount;   // "Detail" with which the camera sees
-    
-    sf::CircleShape body;
-    
-    void setupRays();
-    void setupBody();
+        sf::Vector2f pos;
+        double viewAngle;       // How wide the camera sees
+        double viewLength;      // How far the camera sees
+        unsigned short rayAmount;   // "Detail" with which the camera sees
+
+        double rotation;        // Sum of all the angles in all the rotations applied
+        
+        sf::CircleShape body;
+        
+        void setupRays();
+        void setupBody();
     
     public:
         vector<Ray*> view;
@@ -40,6 +42,12 @@ class Camera{
         void castRays(vector<sf::RectangleShape*> &colliders);
 
         void drawIn(sf::RenderWindow &window);
+
+        sf::Vector2f getPos(){return pos;}
+        double getViewAngle(){return viewAngle;}
+        double getViewLength(){return viewLength;}
+        unsigned short getRayAmount(){return rayAmount;}
+        double getRotation(){return rotation;}
 };
 
 #endif

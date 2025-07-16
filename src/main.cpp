@@ -2,6 +2,15 @@
 #include "Camera.hpp"
 using namespace std;
 
+// Distance moved by the camera for every frame where the necessary key is pressed
+constexpr double DISTANCE_MOVED = 8;
+
+// Angle by which the camera will rotate for every frame where the necessary key is pressed
+constexpr double ANGLE_ROTATED = 2;
+
+constexpr unsigned short MAX_FPS = 120;  // Maximum framerate allowed for the main window
+
+
 int main(){
     // Ray testRay = Ray(sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1300));
     Camera testCamera = Camera(sf::Vector2f(1000, 1000), 30, 1000, 320u);
@@ -29,8 +38,14 @@ int main(){
 
 
     sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
+    win.setFramerateLimit(MAX_FPS);
+
     sf::Clock fpsClock;
     fpsClock.restart();
+
+    // true if the rays should be casted in the current iteration 
+    // (starts as true so they are casted in the first iteration)
+    bool castRaysNow = true;
 
     int fpsCount = 0;
 
@@ -54,33 +69,39 @@ int main(){
 
         // Direction controls
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-            testCamera.move(sf::Vector2f(-2, 0));
+            testCamera.move(sf::Vector2f(-DISTANCE_MOVED, 0));
+            castRaysNow = true;
         }
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-            testCamera.move(sf::Vector2f(2, 0));
+            testCamera.move(sf::Vector2f(DISTANCE_MOVED, 0));
+            castRaysNow = true;
         }
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-            testCamera.move(sf::Vector2f(0, -2));
+            testCamera.move(sf::Vector2f(0, -DISTANCE_MOVED));
+            castRaysNow = true;
         }
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-            testCamera.move(sf::Vector2f(0, 2));
+            testCamera.move(sf::Vector2f(0, DISTANCE_MOVED));
+            castRaysNow = true;
         }
 
 
         // Rotation controls
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-            testCamera.rotate(1);
+            testCamera.rotate(ANGLE_ROTATED);
+            castRaysNow = true;
         }
-
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-            testCamera.rotate(-1);
+            testCamera.rotate(-ANGLE_ROTATED);
+            castRaysNow = true;
         }
 
-        testCamera.castRays(colliders);
+        // Casting rays
+        if (castRaysNow){
+            testCamera.castRays(colliders);
+        }
 
+        // Drawing to window
         win.clear(sf::Color::Black);
 
         for (int i=0; i<colliders.size(); i++){
@@ -102,6 +123,9 @@ int main(){
         testCamera.drawIn(win);
 
         win.display();
+
+
+        castRaysNow = false;
     }
 
     return 0;
