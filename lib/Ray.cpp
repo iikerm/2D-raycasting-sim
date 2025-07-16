@@ -3,22 +3,35 @@
 #include <queue>
 using namespace std;
 
-
+/**
+ * Calculates the distance between two consecutive "points" from the ray (i.e. points where the ray
+ * will check for any collision).
+ */
 void Ray::calculatePointDistance(){
+    sf::Vector2f tempFinish = finish;
+    
+    bool finishOutsideWindow = (finish.x < 0 || finish.y < 0 || finish.x > winSize.x || finish.y > winSize.y);
+    if (finishOutsideWindow){ 
+        while (finishOutsideWindow){
+            tempFinish -= ((finish - start) / (pointNumber/5.f));
+            finishOutsideWindow = (tempFinish.x < 0 
+                || tempFinish.y < 0 
+                || tempFinish.x > winSize.x 
+                || tempFinish.y > winSize.y);
+        }
+        tempFinish += ((finish - start) / (pointNumber/5.f));
+
+    }
+
     pointDistance = sf::Vector2f(
-        (finish.x - start.x) / (double)(pointNumber),
-        (finish.y - start.y) / (double)(pointNumber)
+        (tempFinish.x - start.x) / (double)(pointNumber),
+        (tempFinish.y - start.y) / (double)(pointNumber)
     );
-    /*
-    cout << pointNumber << " points" << endl;
-    cout << "Math: (" << finish.x << " - " << start.x << ") / " << pointNumber << " = " << pointDistance.x << endl;
-    cout << "Math: (" << finish.y << " - " << start.y << ") / " << pointNumber << " = " << pointDistance.y << endl;
-    cout << "Start: " << start.x << "x" << start.y << endl;
-    cout << "End: " << finish.x << "x" << finish.y << endl;
-    cout << "Point distance: " << pointDistance.x << "x" << pointDistance.y << endl;
-    */
 }
 
+/**
+ * Calculates the positions of all the points in the ray.
+ */
 void Ray::calculatePointsArray(){
 
     points[0] = start;
@@ -28,32 +41,41 @@ void Ray::calculatePointsArray(){
     }
 }
 
-
+/**
+ * Default constructor
+ */
 Ray::Ray(){
     start = sf::Vector2f(0,0);
     finish = start;
-
-    // this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
 
     calculatePointDistance();
     calculatePointsArray();
 }
 
-Ray::Ray(sf::Vector2f start, sf::Vector2f finish){
+/**
+ * Constructor used in the Camera class.
+ * It creates a ray going from the specified start position to the specified end (finish) position.
+ * The sf::RenderWindow reference is needed in order to calculate the window size.
+ */
+Ray::Ray(sf::Vector2f start, sf::Vector2f finish, const sf::RenderWindow &win){
     this->start = start;
     this->finish = finish;
 
-    // this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
+    this->winSize = win.getSize();
     pointInCollision = pointNumber-1;
     calculatePointDistance();
     calculatePointsArray();
 }
 
-Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight){
+/**
+ * Constructor that takes a start position, and the distance & angle, which are then used to calculate
+ * the position of the end point of the ray.
+ */
+Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::RenderWindow &win){
     this->start = start;
     this->finish = start + sf::Vector2f(lineOfSight, lineOfSight);
 
-    // this->points = vector<sf::Vector2f>(pointNumber, sf::Vector2f(0,0));
+    this->winSize = win.getSize();
     pointInCollision = pointNumber-1;
     
     this->rotateDegrees(angleDegrees);
@@ -67,23 +89,30 @@ Ray::Ray(Ray& other){
         this->points[i] = other.points[i];
     }*/
 
+    this->winSize = other.winSize;
+
     calculatePointsArray();
     this->pointDistance = other.pointDistance;
     this->pointInCollision = other.pointInCollision;
 }
 
-
+/**
+ * Moves the entire ray the specified distance
+ */
 void Ray::move(sf::Vector2f offset){
     this->start += offset;
     this->finish += offset;
 
-    // No need to recalculate point distance because 
-    // the distance between start and finish has not changed
-
+    calculatePointDistance();
     calculatePointsArray();
 }
 
-
+/**
+ * Rotates the entire ray by the specified angle in degrees.
+ * In reality this method only rotates the final point of the ray, and then uses
+ * calculatePointDistance() and calculatePointsArray() to calculate the position of all the other
+ * points in the ray to avoid having to call this method for each of those points.
+ */
 void Ray::rotateDegrees(double angle){
     // We need the angle to be in radians in order to work with cmath's sin() and cos() functions so:
     angle = angle * M_PI / 180;
@@ -129,6 +158,10 @@ void Ray::rotateDegrees(double angle){
  * By pre-computing the value of sin(-1°) and cos(-1°), some computation will be avoided, more so
  * when this process is done for multiple rays. 
  * This method is equivalent to using rotateDegrees(1).
+ * The boolean argument must be true if the rotation will be -1°, and false otherwise.
+ * 
+ * If this method is called, it needs to be followed by 
+ * calculatePointDistance() and calculatePointsArray(), otherwise it will do nothing.
  */
 void Ray::rotateInStep(bool negativeStep){
     // Pre-computed values using python math.sin(), math.cos(), and math.radians() functions
@@ -151,14 +184,12 @@ void Ray::rotateInStep(bool negativeStep){
     );
 
     finish += start;
-
-    calculatePointDistance();
-    calculatePointsArray();
 }
 
 /**
  * Method that will rotate the ray by the specified angle in degrees. 
- * It unifies the rotateDegrees() and rotateInStep() methods and decides which one is best to use.
+ * It unifies the rotateDegrees() and rotateInStep() methods and decides which one is best to use
+ * in each individual case.
  */
 void Ray::rotate(double angle){
 
@@ -171,6 +202,9 @@ void Ray::rotate(double angle){
         for (int i=0; i<abs(angle); i++){
             this->rotateInStep(angle<0);
         }
+        calculatePointDistance();
+        calculatePointsArray();
+        
     }else{
         this->rotateDegrees(angle);
     }

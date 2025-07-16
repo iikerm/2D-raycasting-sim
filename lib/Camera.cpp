@@ -11,14 +11,14 @@ Camera::~Camera(){
 }
 
 
-void Camera::setupRays(){
+void Camera::setupRays(const sf::RenderWindow &win){
     double angleStep = viewAngle / rayAmount;
     
     view = vector<Ray*>(rayAmount);
     
     
     for (unsigned short i=0; i<rayAmount; i++){
-        view[i] = new Ray(pos, pos - sf::Vector2f(0, viewLength));
+        view[i] = new Ray(pos, pos - sf::Vector2f(0, viewLength), win);
         
         // This makes it so that the camera starts facing correctly in a single 
         // direction, and the next rays are generated from that initial angle
@@ -33,7 +33,7 @@ void Camera::setupBody(){
     body.setFillColor(sf::Color(253, 146, 16));       // #fd9210
 }
 
-Camera::Camera(){
+Camera::Camera(const sf::RenderWindow &win){
     pos = sf::Vector2f(0, 0);
     viewAngle = defaultViewAngle;
     viewLength = defaultViewLength;
@@ -42,10 +42,11 @@ Camera::Camera(){
     this->rotation = 0;
 
     setupBody();
-    setupRays();
+    setupRays(win);
 }
 
 Camera::Camera(sf::Vector2f pos,
+               const sf::RenderWindow &win,
                double viewAngle,
                double viewLength,
                unsigned short rayAmount){
@@ -58,7 +59,7 @@ Camera::Camera(sf::Vector2f pos,
     this->rotation = 0;
 
     setupBody();
-    setupRays();
+    setupRays(win);
 }
     
 void Camera::move(sf::Vector2f offset){

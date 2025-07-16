@@ -12,8 +12,11 @@ constexpr unsigned short MAX_FPS = 120;  // Maximum framerate allowed for the ma
 
 
 int main(){
+    sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
+    win.setFramerateLimit(MAX_FPS);
+
     // Ray testRay = Ray(sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1300));
-    Camera testCamera = Camera(sf::Vector2f(1000, 1000), 30, 1000, 320u);
+    Camera testCamera = Camera(sf::Vector2f(1000, 1000), win, 30, 5000, 500u);
     testCamera.rotate(45);
     
     sf::RectangleShape a = sf::RectangleShape(sf::Vector2f(100, 100));
@@ -35,10 +38,6 @@ int main(){
     circle.setOutlineThickness(5);
 
     vector<sf::RectangleShape*> colliders = {&a, &b, &c};
-
-
-    sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
-    win.setFramerateLimit(MAX_FPS);
 
     sf::Clock fpsClock;
     fpsClock.restart();

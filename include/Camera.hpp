@@ -20,7 +20,7 @@ class Camera{
         
         sf::CircleShape body;
         
-        void setupRays();
+        void setupRays(const sf::RenderWindow &win);
         void setupBody();
     
     public:
@@ -29,8 +29,9 @@ class Camera{
         const static double defaultViewLength;
         const static unsigned short defaultRayAmount;
 
-        Camera();
+        Camera(const sf::RenderWindow &win);
         Camera(sf::Vector2f pos,
+            const sf::RenderWindow &win,
             double viewAngle = defaultViewAngle,
             double viewLength = defaultViewLength,
             unsigned short rayAmount = defaultRayAmount);
