@@ -1,7 +1,6 @@
 #include "Camera.hpp"
 
 const double Camera::defaultViewAngle = 30.F;
-const double Camera::defaultViewLength = 100.F;
 const unsigned short Camera::defaultRayAmount = 100u;
 
 Camera::~Camera(){
@@ -36,7 +35,7 @@ void Camera::setupBody(){
 Camera::Camera(const sf::RenderWindow &win){
     pos = sf::Vector2f(0, 0);
     viewAngle = defaultViewAngle;
-    viewLength = defaultViewLength;
+    viewLength = max(win.getSize().x, win.getSize().y);
     rayAmount = defaultRayAmount;
 
     this->rotation = 0;
@@ -48,12 +47,12 @@ Camera::Camera(const sf::RenderWindow &win){
 Camera::Camera(sf::Vector2f pos,
                const sf::RenderWindow &win,
                double viewAngle,
-               double viewLength,
                unsigned short rayAmount){
     
     this->pos = pos;
     this->viewAngle = viewAngle;
-    this->viewLength = viewLength;
+    this->viewLength = 5000;//max(win.getSize().x, win.getSize().y);
+    cout << "length is " << viewLength << endl;
     this->rayAmount = rayAmount;
 
     this->rotation = 0;

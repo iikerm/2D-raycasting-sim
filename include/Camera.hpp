@@ -26,14 +26,12 @@ class Camera{
     public:
         vector<Ray*> view;
         const static double defaultViewAngle;
-        const static double defaultViewLength;
         const static unsigned short defaultRayAmount;
 
         Camera(const sf::RenderWindow &win);
         Camera(sf::Vector2f pos,
             const sf::RenderWindow &win,
             double viewAngle = defaultViewAngle,
-            double viewLength = defaultViewLength,
             unsigned short rayAmount = defaultRayAmount);
         
         ~Camera();
