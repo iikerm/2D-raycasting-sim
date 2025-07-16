@@ -62,7 +62,16 @@ Camera::Camera(sf::Vector2f pos,
     setupRays(win);
 }
     
-void Camera::move(sf::Vector2f offset){
+void Camera::move(sf::Vector2f offset, vector<sf::RectangleShape*> &colliders){
+    sf::CircleShape bodyCopy = body;
+    bodyCopy.setPosition(body.getPosition() + offset);
+
+    for (unsigned i=0; i<colliders.size(); i++){
+        if (colliders[i]->getGlobalBounds().intersects(bodyCopy.getGlobalBounds())){
+            return;
+        }
+    }
+    
     for (short unsigned i=0; i<view.size(); i++){
         view[i]->move(offset);
     }

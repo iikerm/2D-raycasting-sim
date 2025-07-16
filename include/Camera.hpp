@@ -38,7 +38,7 @@ class Camera{
         
         ~Camera();
             
-        void move(sf::Vector2f offset);
+        void move(sf::Vector2f offset, vector<sf::RectangleShape*> &colliders);
         void rotate(double angle);
         void castRays(vector<sf::RectangleShape*> &colliders);
 

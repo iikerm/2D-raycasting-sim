@@ -16,8 +16,32 @@ int main(){
     win.setFramerateLimit(MAX_FPS);
 
     // Ray testRay = Ray(sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1300));
-    Camera testCamera = Camera(sf::Vector2f(1000, 1000), win, 30, 5000, 500u);
-    testCamera.rotate(45);
+    Camera testCamera = Camera(sf::Vector2f(100, 100), win, 30, 5000, 500u);
+    testCamera.rotate(225);
+
+    vector<vector<unsigned>> maze = {{0, 0, 1, 0, 1},
+                                     {0, 0, 1, 1, 1},
+                                     {0, 0, 0, 0, 1},
+                                     {1, 1, 1, 0, 1},
+                                     {0, 0, 0, 0, 1}};
+
+    vector<sf::RectangleShape*> colliders;
+    sf::RectangleShape* maze_wall;
+
+    sf::Vector2f wall_dimensions = sf::Vector2f(win.getSize().x/maze.size(), 
+                                                win.getSize().y/maze[0].size());
+
+    for (unsigned i=0; i<maze.size(); i++){
+        for (unsigned j=0; j<maze[i].size(); j++){
+            if (maze[i][j] == 1){
+                maze_wall = new sf::RectangleShape(wall_dimensions);
+                maze_wall->setFillColor(sf::Color::Red);
+                maze_wall->setPosition(wall_dimensions.x*j, wall_dimensions.y*i);
+
+                colliders.push_back(maze_wall);
+            }
+        }
+    }
     
     sf::RectangleShape a = sf::RectangleShape(sf::Vector2f(100, 100));
     a.setPosition(50, 200);
@@ -37,7 +61,6 @@ int main(){
     circle.setFillColor(sf::Color::Transparent);
     circle.setOutlineThickness(5);
 
-    vector<sf::RectangleShape*> colliders = {&a, &b, &c};
 
     sf::Clock fpsClock;
     fpsClock.restart();
@@ -68,19 +91,19 @@ int main(){
 
         // Direction controls
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-            testCamera.move(sf::Vector2f(-DISTANCE_MOVED, 0));
+            testCamera.move(sf::Vector2f(-DISTANCE_MOVED, 0), colliders);
             castRaysNow = true;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-            testCamera.move(sf::Vector2f(DISTANCE_MOVED, 0));
+            testCamera.move(sf::Vector2f(DISTANCE_MOVED, 0), colliders);
             castRaysNow = true;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-            testCamera.move(sf::Vector2f(0, -DISTANCE_MOVED));
+            testCamera.move(sf::Vector2f(0, -DISTANCE_MOVED), colliders);
             castRaysNow = true;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
-            testCamera.move(sf::Vector2f(0, DISTANCE_MOVED));
+            testCamera.move(sf::Vector2f(0, DISTANCE_MOVED), colliders);
             castRaysNow = true;
         }
 
@@ -103,6 +126,9 @@ int main(){
         // Drawing to window
         win.clear(sf::Color::Black);
 
+        // win.draw(testRay.makeDrawable());
+        testCamera.drawIn(win);
+
         for (int i=0; i<colliders.size(); i++){
             win.draw(*colliders[i]);
         }
@@ -118,8 +144,6 @@ int main(){
 
         win.draw(circle);
 
-        // win.draw(testRay.makeDrawable());
-        testCamera.drawIn(win);
 
         win.display();
 

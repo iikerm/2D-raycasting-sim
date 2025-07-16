@@ -20,7 +20,6 @@ void Ray::calculatePointDistance(){
                 || tempFinish.y > winSize.y);
         }
         tempFinish += ((finish - start) / (pointNumber/5.f));
-
     }
 
     pointDistance = sf::Vector2f(
@@ -204,7 +203,7 @@ void Ray::rotate(double angle){
         }
         calculatePointDistance();
         calculatePointsArray();
-        
+
     }else{
         this->rotateDegrees(angle);
     }
