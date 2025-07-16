@@ -8,9 +8,10 @@ using namespace std;
  * will check for any collision).
  */
 void Ray::calculatePointDistance(){
+    // (finish.x - start.x)
     pointDistance = sf::Vector2f(
-        (finish.x - start.x) / (double)(pointNumber),
-        (finish.y - start.y) / (double)(pointNumber)
+        (finish.x - start.x) / (double)(pointNumber*2),
+        (finish.y - start.y) / (double)(pointNumber*2)
     );
 }
 
@@ -32,6 +33,8 @@ Ray::Ray(){
     start = sf::Vector2f(0,0);
     finish = start;
 
+    length = sqrt(pow(finish.x - start.x, 2) + pow(finish.y - start.y, 2));
+
     calculatePointDistance();
     calculatePointsArray();
 }
@@ -45,6 +48,8 @@ Ray::Ray(sf::Vector2f start, sf::Vector2f finish, const sf::RenderWindow &win){
     this->start = start;
     this->finish = finish;
 
+    length = sqrt(pow(finish.x - start.x, 2) + pow(finish.y - start.y, 2));
+
     this->winSize = win.getSize();
     pointInCollision = pointNumber-1;
     calculatePointDistance();
@@ -57,7 +62,9 @@ Ray::Ray(sf::Vector2f start, sf::Vector2f finish, const sf::RenderWindow &win){
  */
 Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::RenderWindow &win){
     this->start = start;
-    this->finish = start + sf::Vector2f(lineOfSight, lineOfSight);
+    this->finish = start + sf::Vector2f(0, lineOfSight);
+
+    length = lineOfSight;
 
     this->winSize = win.getSize();
     pointInCollision = pointNumber-1;
