@@ -17,8 +17,9 @@ class Ray{
         sf::Vector2f pointDistance;     // Distance from one point in the ray to the next
     
     public:
-        const static short unsigned pointNumber = 800u;  // Number of points that the ray is "composed of"
-        sf::Vector2f points[pointNumber];
+        constexpr static double pointDensity = 24.f;   // Points in the ray for every 100px of distance
+        short unsigned pointNumber;  // Number of points that the ray is "composed of"
+        sf::Vector2f* points;
         sf::Vector2f start;
         sf::Vector2f finish;
         
@@ -33,6 +34,8 @@ class Ray{
         Ray(sf::Vector2f start, sf::Vector2f finish, const sf::RenderWindow &win);
         Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::RenderWindow &win);
         Ray(Ray& other);
+
+        ~Ray();
         
         void move(sf::Vector2f offset);
         void rotateDegrees(double angle);

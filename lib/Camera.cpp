@@ -51,7 +51,7 @@ Camera::Camera(sf::Vector2f pos,
     
     this->pos = pos;
     this->viewAngle = viewAngle;
-    this->viewLength = 5000;//max(win.getSize().x, win.getSize().y);
+    this->viewLength = max(win.getSize().x, win.getSize().y)*2;
     cout << "length is " << viewLength << endl;
     this->rayAmount = rayAmount;
 

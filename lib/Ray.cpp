@@ -3,6 +3,10 @@
 #include <queue>
 using namespace std;
 
+Ray::~Ray(){
+    delete[] points;
+}
+
 /**
  * Calculates the distance between two consecutive "points" from the ray (i.e. points where the ray
  * will check for any collision).
@@ -10,9 +14,15 @@ using namespace std;
 void Ray::calculatePointDistance(){
     // (finish.x - start.x)
     pointDistance = sf::Vector2f(
-        (finish.x - start.x) / (double)(pointNumber*2),
-        (finish.y - start.y) / (double)(pointNumber*2)
+        (finish.x - start.x) / (double)(pointNumber),
+        (finish.y - start.y) / (double)(pointNumber)
     );
+
+    /*
+    length / pointNumber,
+        length / pointNumber
+    
+    */
 }
 
 /**
@@ -35,6 +45,10 @@ Ray::Ray(){
 
     length = sqrt(pow(finish.x - start.x, 2) + pow(finish.y - start.y, 2));
 
+    pointNumber = pointDensity * length/100;
+    points = new sf::Vector2f[pointNumber];
+
+    pointInCollision = pointNumber-1;
     calculatePointDistance();
     calculatePointsArray();
 }
@@ -51,6 +65,10 @@ Ray::Ray(sf::Vector2f start, sf::Vector2f finish, const sf::RenderWindow &win){
     length = sqrt(pow(finish.x - start.x, 2) + pow(finish.y - start.y, 2));
 
     this->winSize = win.getSize();
+
+    pointNumber = pointDensity * length/100;
+    points = new sf::Vector2f[pointNumber];
+
     pointInCollision = pointNumber-1;
     calculatePointDistance();
     calculatePointsArray();
@@ -65,6 +83,11 @@ Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::
     this->finish = start + sf::Vector2f(0, lineOfSight);
 
     length = lineOfSight;
+
+    pointNumber = pointDensity * length/100;
+    points = new sf::Vector2f[pointNumber];
+
+    pointInCollision = pointNumber-1;
 
     this->winSize = win.getSize();
     pointInCollision = pointNumber-1;
@@ -81,6 +104,12 @@ Ray::Ray(Ray& other){
     }*/
 
     this->winSize = other.winSize;
+    this->length = other.length;
+
+    pointNumber = other.pointNumber;
+    points = new sf::Vector2f[pointNumber];
+
+    pointInCollision = pointNumber-1;
 
     calculatePointsArray();
     this->pointDistance = other.pointDistance;
@@ -234,9 +263,13 @@ void Ray::castIt(vector<sf::RectangleShape*> colliders){
 
             if (points[i].x < 0 || points[i].y < 0 
                         || points[i].x > winSize.x || points[i].y > winSize.y){
-                pointInCollision = i-1;
+                if (i==0){
+                    pointInCollision = 0;
+                }else{
+                    pointInCollision = i-1;
+                }
                 return;
-                // This branch can't finish because it must check if there is a collision with a collider
+
             }else{
                 colliderBounds = colliders[j]->getGlobalBounds();
                 
@@ -247,8 +280,6 @@ void Ray::castIt(vector<sf::RectangleShape*> colliders){
                         pointInCollision = i-1;
                     }
                     return;
-                }else{
-                    pointInCollision = pointNumber-1;
                 }
             }
         }

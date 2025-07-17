@@ -131,14 +131,14 @@ int main(){
 
         // Drawing to window
         win.clear(sf::Color::Black);
-
-        // win.draw(testRay.makeDrawable());
-        testCamera.drawIn(win);
-
+        
+        
         for (int i=0; i<colliders.size(); i++){
             win.draw(*colliders[i]);
         }
-
+        // win.draw(testRay.makeDrawable());
+        testCamera.drawIn(win);
+        
         /*for (int j=0; j<10; j++){
             for (int i=0; i<testCamera.view[j].pointInCollision; i++){
                 sf::CircleShape tc(10, 30);
