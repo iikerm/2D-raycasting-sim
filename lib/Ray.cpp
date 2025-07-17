@@ -254,30 +254,42 @@ void Ray::sortColliders(vector<sf::RectangleShape*> &colliders){
 /**
  * Calculates the ray's collision with the first object of the list that comes across its path.
  * If using outside of a Camera method, call Ray::sortColliders method first for better performance.
+ * The 'estimate' parameter can be used to check for collisions around a certain point index
+ * instead of starting from the first point in the points array. This will only happen if the estimate
+ * is not zero.
  */
-void Ray::castIt(vector<sf::RectangleShape*> colliders){
+void Ray::castIt(vector<sf::RectangleShape*> colliders, short unsigned estimate){
     sf::FloatRect colliderBounds;
 
-    for (short unsigned i=0; i<pointNumber-1; i++){
-        for (long unsigned j=0; j<colliders.size(); j++){
+    /*
+    for (short unsigned i=10-1; i-(10-1) < 20; i++){
+        cout << i%(20) << endl;
+    }
+    */
 
-            if (points[i].x < 0 || points[i].y < 0 
-                        || points[i].x > winSize.x || points[i].y > winSize.y){
-                if (i==0){
+    
+    for (short unsigned i=estimate-1; i-(estimate-1) < pointNumber; i++){
+        for (long unsigned j=0; j<colliders.size(); j++){
+            
+            short unsigned actualIndex = i%pointNumber;
+
+            if (points[actualIndex].x < 0 || points[actualIndex].y < 0 
+                        || points[actualIndex].x > winSize.x || points[actualIndex].y > winSize.y){
+                if (actualIndex==0){
                     pointInCollision = 0;
                 }else{
-                    pointInCollision = i-1;
+                    pointInCollision = actualIndex-1;
                 }
                 return;
 
             }else{
                 colliderBounds = colliders[j]->getGlobalBounds();
                 
-                if(colliderBounds.contains(points[i])){
-                    if (i==0){
+                if(colliderBounds.contains(points[actualIndex])){
+                    if (actualIndex==0){
                         pointInCollision = 0;
                     }else{
-                        pointInCollision = i-1;
+                        pointInCollision = actualIndex-1;
                     }
                     return;
                 }
