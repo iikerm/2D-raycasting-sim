@@ -12,17 +12,10 @@ Ray::~Ray(){
  * will check for any collision).
  */
 void Ray::calculatePointDistance(){
-    // (finish.x - start.x)
     pointDistance = sf::Vector2f(
         (finish.x - start.x) / (double)(pointNumber),
         (finish.y - start.y) / (double)(pointNumber)
     );
-
-    /*
-    length / pointNumber,
-        length / pointNumber
-    
-    */
 }
 
 /**

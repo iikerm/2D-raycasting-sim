@@ -32,7 +32,6 @@ void Camera::setupRays(const sf::Vector2f winSize){
         // direction, and the next rays are generated from that initial angle
         view[i]->rotateDegrees(-viewAngle/2 + i*angleStep);
     }
-
 }
 
 void Camera::setupBody(){
@@ -104,6 +103,12 @@ void Camera::rotate(double angle){
     }
 
     this->rotation += angle;
+
+    // Calculates rotation as an angle in the range [0, 360)
+    if(this->rotation >= 360){
+        // This calculations are equal to using this->rotation % 360
+        this->rotation = this->rotation - 360*((int)(this->rotation / 360));
+    }
 }
 
 // Maybe change sf::RectangleShape into sf::VertexArray or something similar for more flexibility.
