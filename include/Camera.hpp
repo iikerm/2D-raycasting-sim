@@ -18,9 +18,11 @@ class Camera{
 
         double rotation;        // Sum of all the angles in all the rotations applied
         
+        sf::Vector2f winSize;
+
         sf::CircleShape body;
         
-        void setupRays(const sf::Vector2f sizeLimit);
+        void setupRays(const sf::Vector2f winSize);
         void setupRayEndpoints(bool initVector=false);
         void setupBody();
     
@@ -30,9 +32,9 @@ class Camera{
         const static double defaultViewAngle;
         const static unsigned short defaultRayAmount;
 
-        Camera(const sf::Vector2f sizeLimit);
+        Camera(const sf::Vector2f winSize);
         Camera(sf::Vector2f pos,
-            const sf::Vector2f sizeLimit,
+            const sf::Vector2f winSize,
             double viewAngle = defaultViewAngle,
             unsigned short rayAmount = defaultRayAmount);
         

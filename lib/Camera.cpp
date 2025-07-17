@@ -20,13 +20,13 @@ void Camera::setupRayEndpoints(bool initVector){
 }
 
 
-void Camera::setupRays(const sf::Vector2f sizeLimit){
+void Camera::setupRays(const sf::Vector2f winSize){
     double angleStep = viewAngle / rayAmount;
     
     view = vector<Ray*>(rayAmount);
     
     for (unsigned short i=0; i<rayAmount; i++){
-        view[i] = new Ray(pos, pos - sf::Vector2f(0, viewLength), sizeLimit);
+        view[i] = new Ray(pos, pos - sf::Vector2f(0, viewLength), winSize);
         
         // This makes it so that the camera starts facing correctly in a single 
         // direction, and the next rays are generated from that initial angle
@@ -42,39 +42,48 @@ void Camera::setupBody(){
     body.setFillColor(sf::Color(253, 146, 16));       // #fd9210
 }
 
-Camera::Camera(const sf::Vector2f sizeLimit){
+Camera::Camera(const sf::Vector2f winSize){
     pos = sf::Vector2f(0, 0);
     viewAngle = defaultViewAngle;
-    viewLength = max(sizeLimit.x, sizeLimit.y);
+    viewLength = max(winSize.x, winSize.y);
     rayAmount = defaultRayAmount;
 
     this->rotation = 0;
 
     setupBody();
-    setupRays(sizeLimit);
+    setupRays(winSize);
     setupRayEndpoints(true);
 }
 
 Camera::Camera(sf::Vector2f pos,
-               const sf::Vector2f sizeLimit,
+               const sf::Vector2f winSize,
                double viewAngle,
                unsigned short rayAmount){
     
     this->pos = pos;
     this->viewAngle = viewAngle;
-    this->viewLength = max(sizeLimit.x, sizeLimit.y)*2;
+    this->viewLength = max(winSize.x, winSize.y)*2;
     this->rayAmount = rayAmount;
 
+    this->winSize = winSize;
     this->rotation = 0;
 
     setupBody();
-    setupRays(sizeLimit);
+    setupRays(winSize);
     setupRayEndpoints(true);
 }
     
 void Camera::move(sf::Vector2f offset, vector<sf::RectangleShape*> &colliders){
     sf::CircleShape bodyCopy = body;
     bodyCopy.setPosition(body.getPosition() + offset);
+
+    if(bodyCopy.getPosition().x < 0 || bodyCopy.getPosition().y < 0){
+        return;
+    }else if (bodyCopy.getPosition().x + bodyCopy.getRadius()*2 > winSize.x){
+        return;
+    }else if (bodyCopy.getPosition().y + bodyCopy.getRadius()*2 > winSize.y){
+        return;
+    }
 
     for (unsigned i=0; i<colliders.size(); i++){
         if (colliders[i]->getGlobalBounds().intersects(bodyCopy.getGlobalBounds())){

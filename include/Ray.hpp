@@ -31,8 +31,8 @@ class Ray{
         void calculatePointsArray();
     
         Ray();
-        Ray(sf::Vector2f start, sf::Vector2f finish, const sf::Vector2f sizeLimit);
-        Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::Vector2f sizeLimit);
+        Ray(sf::Vector2f start, sf::Vector2f finish, const sf::Vector2f winSize);
+        Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::Vector2f winSize);
         Ray(Ray& other);
 
         ~Ray();
