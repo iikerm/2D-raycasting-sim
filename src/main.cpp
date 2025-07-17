@@ -19,17 +19,17 @@ int main(){
     Camera testCamera = Camera(sf::Vector2f(100, 100), win, 30, 500u);
     testCamera.rotate(225);
 
-    vector<vector<unsigned>> maze = {{0, 0, 1, 0, 1},
-                                     {0, 0, 1, 1, 1},
-                                     {0, 0, 0, 0, 1},
-                                     {1, 1, 1, 0, 1},
-                                     {0, 0, 0, 0, 1}};
+    vector<vector<unsigned>> maze = {{0, 1, 0, 1, 0, 0, 0, 1},
+                                     {0, 1, 0, 1, 1, 0, 0, 0},
+                                     {0, 0, 0, 0, 0, 0, 1, 1},
+                                     {1, 1, 1, 0, 0, 1, 1, 0},
+                                     {0, 0, 0, 0, 0, 1, 0, 0}};
 
     vector<sf::RectangleShape*> colliders;
     sf::RectangleShape* maze_wall;
 
-    sf::Vector2f wall_dimensions = sf::Vector2f(win.getSize().x/maze.size(), 
-                                                win.getSize().y/maze[0].size());
+    sf::Vector2f wall_dimensions = sf::Vector2f(win.getSize().x/maze[0].size(), 
+                                                win.getSize().y/maze.size());
 
     for (unsigned i=0; i<maze.size(); i++){
         for (unsigned j=0; j<maze[i].size(); j++){
@@ -42,24 +42,6 @@ int main(){
             }
         }
     }
-    
-    sf::RectangleShape a = sf::RectangleShape(sf::Vector2f(100, 100));
-    a.setPosition(50, 200);
-    a.setFillColor(sf::Color::Red);
-
-    sf::RectangleShape b = sf::RectangleShape(sf::Vector2f(100, 100));
-    b.setPosition(150, 300);
-    b.setFillColor(sf::Color::Red);
-
-    sf::RectangleShape c = sf::RectangleShape(sf::Vector2f(100, 1000));
-    c.setPosition(250, 400);
-    c.setFillColor(sf::Color::Red);
-
-    sf::CircleShape circle = sf::CircleShape(300, 30ul);
-    circle.setPosition(sf::Vector2f(700, 700));
-    circle.setOutlineColor(sf::Color::Cyan);
-    circle.setFillColor(sf::Color::Transparent);
-    circle.setOutlineThickness(5);
 
 
     sf::Clock fpsClock;
@@ -137,19 +119,7 @@ int main(){
             win.draw(*colliders[i]);
         }
         // win.draw(testRay.makeDrawable());
-        testCamera.drawIn(win);
-        
-        /*for (int j=0; j<10; j++){
-            for (int i=0; i<testCamera.view[j].pointInCollision; i++){
-                sf::CircleShape tc(10, 30);
-                tc.setPosition(testCamera.view[j].points[i]);
-                tc.setFillColor(sf::Color(i*20, 10*i, 255 - 20*i));
-                win.draw(tc);
-            }
-        }*/
-
-        win.draw(circle);
-
+        testCamera.drawIn(win, true);
 
         win.display();
 
