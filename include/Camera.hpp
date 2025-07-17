@@ -46,11 +46,11 @@ class Camera{
 
         void drawIn(sf::RenderWindow &window, bool debug=false) const;
 
-        sf::Vector2f getPos(){return pos;}
-        double getViewAngle(){return viewAngle;}
-        double getViewLength(){return viewLength;}
-        unsigned short getRayAmount(){return rayAmount;}
-        double getRotation(){return rotation;}
+        const sf::Vector2f getPos() const {return pos;}
+        const double getViewAngle() const {return viewAngle;}
+        const double getViewLength() const {return viewLength;}
+        const unsigned short getRayAmount() const {return rayAmount;}
+        const double getRotation() const {return rotation;}
 };
 
 #endif
