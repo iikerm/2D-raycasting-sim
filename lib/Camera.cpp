@@ -9,12 +9,21 @@ Camera::~Camera(){
     }
 }
 
+void Camera::setupRayEndpoints(bool initVector){
+    if (initVector){
+        rayEndpoints = vector<sf::Vector2f*>(rayAmount);
+    }
+    
+    for (unsigned short i=0; i<rayAmount; i++){
+        rayEndpoints[i] = &(view[i]->points[view[i]->pointInCollision]);
+    }
+}
+
 
 void Camera::setupRays(const sf::RenderWindow &win){
     double angleStep = viewAngle / rayAmount;
     
     view = vector<Ray*>(rayAmount);
-    
     
     for (unsigned short i=0; i<rayAmount; i++){
         view[i] = new Ray(pos, pos - sf::Vector2f(0, viewLength), win);
@@ -23,6 +32,7 @@ void Camera::setupRays(const sf::RenderWindow &win){
         // direction, and the next rays are generated from that initial angle
         view[i]->rotateDegrees(-viewAngle/2 + i*angleStep);
     }
+
 }
 
 void Camera::setupBody(){
@@ -42,6 +52,7 @@ Camera::Camera(const sf::RenderWindow &win){
 
     setupBody();
     setupRays(win);
+    setupRayEndpoints(true);
 }
 
 Camera::Camera(sf::Vector2f pos,
@@ -59,6 +70,7 @@ Camera::Camera(sf::Vector2f pos,
 
     setupBody();
     setupRays(win);
+    setupRayEndpoints(true);
 }
     
 void Camera::move(sf::Vector2f offset, vector<sf::RectangleShape*> &colliders){
@@ -93,15 +105,15 @@ void Camera::castRays(vector<sf::RectangleShape*> &colliders){
     for (short unsigned i=0; i<view.size(); i++){
         view[i]->castIt(vector<sf::RectangleShape*>(colliders));
     }
-    
+    setupRayEndpoints();
 }
 
 void Camera::drawIn(sf::RenderWindow &window, bool debug){
     sf::VertexArray viewCone(sf::PrimitiveType::TriangleFan, view.size()+1);
     viewCone[0] = this->pos;
 
-    for (short unsigned i=1; i<(view.size()+1); i++){
-        viewCone[i] = view[i-1]->points[view[i-1]->pointInCollision];
+    for (short unsigned i=1; i<(rayEndpoints.size()+1); i++){
+        viewCone[i] = *rayEndpoints[i-1];
     }
 
     window.draw(viewCone);
