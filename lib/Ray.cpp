@@ -92,10 +92,6 @@ Ray::Ray(Ray& other){
     this->start = other.start;
     this->finish = other.finish;
 
-    /*for (int i=0; i<pointNumber; i++){
-        this->points[i] = other.points[i];
-    }*/
-
     this->winSize = other.winSize;
     this->length = other.length;
 
@@ -282,7 +278,7 @@ void Ray::castIt(vector<sf::RectangleShape*> colliders){
     }
 }
 
-sf::VertexArray Ray::makeDrawable(){
+const sf::VertexArray Ray::makeDrawable() const{
     sf::VertexArray tempVertexArray(sf::Lines, 2);
 
     tempVertexArray[0] = points[0];

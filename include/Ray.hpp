@@ -43,7 +43,7 @@ class Ray{
 
         void castIt(vector<sf::RectangleShape*> colliders);
 
-        sf::VertexArray makeDrawable();
+        const sf::VertexArray makeDrawable() const;
 };
 
 
