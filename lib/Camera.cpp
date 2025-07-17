@@ -95,9 +95,21 @@ void Camera::castRays(vector<sf::RectangleShape*> &colliders){
     
 }
 
-void Camera::drawIn(sf::RenderWindow &window){
+void Camera::drawIn(sf::RenderWindow &window, bool debug){
     for (short unsigned i=0; i<view.size(); i++){
         window.draw(view[i]->makeDrawable());
     }
+    
     window.draw(body);
+    
+    if (debug){
+        for (int j=0; j<view.size(); j++){
+            for (int i=0; i<view[j]->pointInCollision; i++){
+                sf::CircleShape pt(10, 30);
+                pt.setPosition(view[j]->points[i]);
+                pt.setFillColor(sf::Color(i*20, 10*i, 255 - 20*i));
+                window.draw(pt);
+            }
+        }
+    }
 }

@@ -40,7 +40,7 @@ class Camera{
         void rotate(double angle);
         void castRays(vector<sf::RectangleShape*> &colliders);
 
-        void drawIn(sf::RenderWindow &window);
+        void drawIn(sf::RenderWindow &window, bool debug=false);
 
         sf::Vector2f getPos(){return pos;}
         double getViewAngle(){return viewAngle;}
