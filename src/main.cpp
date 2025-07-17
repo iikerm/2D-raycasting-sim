@@ -119,7 +119,7 @@ int main(){
             win.draw(*colliders[i]);
         }
         // win.draw(testRay.makeDrawable());
-        testCamera.drawIn(win, true);
+        testCamera.drawIn(win, false);
 
         win.display();
 

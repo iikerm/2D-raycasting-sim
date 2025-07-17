@@ -75,6 +75,7 @@ void Camera::move(sf::Vector2f offset, vector<sf::RectangleShape*> &colliders){
         view[i]->move(offset);
     }
     body.setPosition(body.getPosition() + offset);
+    this->pos += offset;
 }
 
 void Camera::rotate(double angle){
@@ -96,9 +97,14 @@ void Camera::castRays(vector<sf::RectangleShape*> &colliders){
 }
 
 void Camera::drawIn(sf::RenderWindow &window, bool debug){
-    for (short unsigned i=0; i<view.size(); i++){
-        window.draw(view[i]->makeDrawable());
+    sf::VertexArray viewCone(sf::PrimitiveType::TriangleFan, view.size()+1);
+    viewCone[0] = this->pos;
+
+    for (short unsigned i=1; i<(view.size()+1); i++){
+        viewCone[i] = view[i-1]->points[view[i-1]->pointInCollision];
     }
+
+    window.draw(viewCone);
     
     window.draw(body);
     

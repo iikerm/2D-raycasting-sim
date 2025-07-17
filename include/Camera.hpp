@@ -25,6 +25,7 @@ class Camera{
     
     public:
         vector<Ray*> view;
+        //vector<sf::Vector2f*> rayEndpoints;
         const static double defaultViewAngle;
         const static unsigned short defaultRayAmount;
 
