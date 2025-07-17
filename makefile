@@ -1,4 +1,4 @@
-OPTS=-o3
+OPTS=-O3
 DEBUG_OPTS=-g -Wall
 SFML_OPTS=-lsfml-system -lsfml-window -lsfml-graphics
 
@@ -19,4 +19,4 @@ $(LIBDIR)/%.o : $(LIBDIR)/%.cpp $(INCLUDEDIR)/%.hpp
 	g++ $(OPTS) $(SFML_OPTS) -c -I $(INCLUDEDIR) -o $@ $<
 
 tests: src/tests.cpp
-	g++ src/tests.cpp -o bin/tests $(OPTS) $(SFML_OPTS)
+	g++ src/tests.cpp -o bin/tests $(SFML_OPTS) $(OPTS)
