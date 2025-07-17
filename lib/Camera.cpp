@@ -121,7 +121,7 @@ void Camera::castRays(vector<sf::RectangleShape*> &colliders){
     setupRayEndpoints();
 }
 
-void Camera::drawIn(sf::RenderWindow &window, bool debug){
+void Camera::drawIn(sf::RenderWindow &window, bool debug) const{
     sf::VertexArray viewCone(sf::PrimitiveType::TriangleFan, view.size()+1);
     viewCone[0] = this->pos;
 
