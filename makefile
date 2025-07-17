@@ -1,4 +1,5 @@
-OPTS=-g
+OPTS=-o3
+DEBUG_OPTS=-g -Wall
 SFML_OPTS=-lsfml-system -lsfml-window -lsfml-graphics
 
 LIBDIR=lib
@@ -10,6 +11,9 @@ FILES=$(patsubst %,$(LIBDIR)/%,$(_FILES))
 
 main: src/main.cpp $(FILES)
 	g++ src/main.cpp -I $(INCLUDEDIR) $(FILES) $(OPTS) $(SFML_OPTS) -o bin/main
+
+debug: src/main.cpp $(FILES)
+	g++ src/main.cpp -I $(INCLUDEDIR) $(FILES) $(DEBUG_OPTS) $(SFML_OPTS) -o bin/main
 
 $(LIBDIR)/%.o : $(LIBDIR)/%.cpp $(INCLUDEDIR)/%.hpp
 	g++ $(OPTS) $(SFML_OPTS) -c -I $(INCLUDEDIR) -o $@ $<
