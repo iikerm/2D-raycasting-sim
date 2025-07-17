@@ -43,7 +43,7 @@ class Ray{
         void rotate(double angle);
         void sortColliders(vector<sf::RectangleShape*> &colliders);
 
-        void castIt(vector<sf::RectangleShape*> colliders, short unsigned estimate=0);
+        void castIt(vector<sf::RectangleShape*> colliders);
 
         sf::VertexArray makeDrawable();
 };
