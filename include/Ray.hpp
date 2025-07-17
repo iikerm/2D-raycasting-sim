@@ -23,7 +23,7 @@ class Ray{
         sf::Vector2f start;
         sf::Vector2f finish;
         
-        sf::Vector2u winSize;   // Size of the window where the ray is drawn
+        sf::Vector2f winSize;   // Size of the window where the ray is drawn
         
         short unsigned pointInCollision;    // Index of the point which collided with an object
 
@@ -31,8 +31,8 @@ class Ray{
         void calculatePointsArray();
     
         Ray();
-        Ray(sf::Vector2f start, sf::Vector2f finish, const sf::RenderWindow &win);
-        Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::RenderWindow &win);
+        Ray(sf::Vector2f start, sf::Vector2f finish, const sf::Vector2f sizeLimit);
+        Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::Vector2f sizeLimit);
         Ray(Ray& other);
 
         ~Ray();

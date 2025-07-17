@@ -58,13 +58,13 @@ Ray::Ray(){
  * It creates a ray going from the specified start position to the specified end (finish) position.
  * The sf::RenderWindow reference is needed in order to calculate the window size.
  */
-Ray::Ray(sf::Vector2f start, sf::Vector2f finish, const sf::RenderWindow &win){
+Ray::Ray(sf::Vector2f start, sf::Vector2f finish, const sf::Vector2f sizeLimit){
     this->start = start;
     this->finish = finish;
 
     length = sqrt(pow(finish.x - start.x, 2) + pow(finish.y - start.y, 2));
 
-    this->winSize = win.getSize();
+    this->winSize = sizeLimit;
 
     pointNumber = pointDensity * length/100;
     points = new sf::Vector2f[pointNumber];
@@ -78,7 +78,7 @@ Ray::Ray(sf::Vector2f start, sf::Vector2f finish, const sf::RenderWindow &win){
  * Constructor that takes a start position, and the distance & angle, which are then used to calculate
  * the position of the end point of the ray.
  */
-Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::RenderWindow &win){
+Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::Vector2f sizeLimit){
     this->start = start;
     this->finish = start + sf::Vector2f(0, lineOfSight);
 
@@ -89,7 +89,7 @@ Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::
 
     pointInCollision = pointNumber-1;
 
-    this->winSize = win.getSize();
+    this->winSize = sizeLimit;
     pointInCollision = pointNumber-1;
     
     this->rotateDegrees(angleDegrees);

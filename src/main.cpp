@@ -16,7 +16,7 @@ int main(){
     win.setFramerateLimit(MAX_FPS);
 
     // Ray testRay = Ray(sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1300));
-    Camera testCamera = Camera(sf::Vector2f(100, 100), win, 30, 500u);
+    Camera testCamera = Camera(sf::Vector2f(100, 100), sf::Vector2f(win.getSize()), 30, 500u);
     testCamera.rotate(225);
 
     vector<vector<unsigned>> maze = {{0, 1, 0, 1, 0, 0, 0, 1},

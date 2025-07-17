@@ -20,13 +20,13 @@ void Camera::setupRayEndpoints(bool initVector){
 }
 
 
-void Camera::setupRays(const sf::RenderWindow &win){
+void Camera::setupRays(const sf::Vector2f sizeLimit){
     double angleStep = viewAngle / rayAmount;
     
     view = vector<Ray*>(rayAmount);
     
     for (unsigned short i=0; i<rayAmount; i++){
-        view[i] = new Ray(pos, pos - sf::Vector2f(0, viewLength), win);
+        view[i] = new Ray(pos, pos - sf::Vector2f(0, viewLength), sizeLimit);
         
         // This makes it so that the camera starts facing correctly in a single 
         // direction, and the next rays are generated from that initial angle
@@ -42,34 +42,33 @@ void Camera::setupBody(){
     body.setFillColor(sf::Color(253, 146, 16));       // #fd9210
 }
 
-Camera::Camera(const sf::RenderWindow &win){
+Camera::Camera(const sf::Vector2f sizeLimit){
     pos = sf::Vector2f(0, 0);
     viewAngle = defaultViewAngle;
-    viewLength = max(win.getSize().x, win.getSize().y);
+    viewLength = max(sizeLimit.x, sizeLimit.y);
     rayAmount = defaultRayAmount;
 
     this->rotation = 0;
 
     setupBody();
-    setupRays(win);
+    setupRays(sizeLimit);
     setupRayEndpoints(true);
 }
 
 Camera::Camera(sf::Vector2f pos,
-               const sf::RenderWindow &win,
+               const sf::Vector2f sizeLimit,
                double viewAngle,
                unsigned short rayAmount){
     
     this->pos = pos;
     this->viewAngle = viewAngle;
-    this->viewLength = max(win.getSize().x, win.getSize().y)*2;
-    cout << "length is " << viewLength << endl;
+    this->viewLength = max(sizeLimit.x, sizeLimit.y)*2;
     this->rayAmount = rayAmount;
 
     this->rotation = 0;
 
     setupBody();
-    setupRays(win);
+    setupRays(sizeLimit);
     setupRayEndpoints(true);
 }
     
