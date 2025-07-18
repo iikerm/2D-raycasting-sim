@@ -292,3 +292,9 @@ const sf::VertexArray Ray::makeDrawable() const{
     
     return tempVertexArray;
 }
+
+
+double Ray::euclideanDistanceToCollision(){
+    return sqrt(pow(points[pointInCollision].x - start.x, 2) 
+            + pow(points[pointInCollision].y - start.y, 2));
+}

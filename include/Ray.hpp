@@ -44,6 +44,9 @@ class Ray{
         void castIt(vector<sf::RectangleShape*> colliders);
 
         const sf::VertexArray makeDrawable() const;
+
+        const double getLength() const {return length;}
+        double euclideanDistanceToCollision();
 };
 
 
