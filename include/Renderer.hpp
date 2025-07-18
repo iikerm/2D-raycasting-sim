@@ -13,11 +13,19 @@ class Renderer{
         sf::Vector2f size;
         sf::Vector2f pos;
     public:
-        static sf::Color darkenByDepth(double minDepth, double maxDepth, sf::Color original);
-        
-        Renderer(const Camera &cam, sf::Vector2f size, sf::Vector2f pos);
+        double minRenderedDepth;
+        double maxRenderedDepth;
 
-        void drawRender(const sf::RenderWindow &win) const;
+        unsigned long minDepthIndex;
+        unsigned long maxDepthIndex;
+
+        sf::Color darkenByDepth(double actualDepth, sf::Color original);
+        
+        Renderer(Camera &cam, sf::Vector2f size, sf::Vector2f pos);
+
+        void computeRenderDistances();
+
+        void drawRender(sf::RenderWindow &win);
 };
 
 #endif
