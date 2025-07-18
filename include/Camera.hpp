@@ -10,6 +10,8 @@ using namespace std;
  * making group rotations and translations easier to handle.
  */
 class Camera{
+    friend class Renderer;
+
     private:
         sf::Vector2f pos;
         double viewAngle;       // How wide the camera sees
