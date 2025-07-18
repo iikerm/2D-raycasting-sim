@@ -1,4 +1,5 @@
 #include "Camera.hpp"
+#include <cmath>
 
 const double Camera::defaultViewAngle = 30.F;
 const unsigned short Camera::defaultRayAmount = 100u;
@@ -122,15 +123,33 @@ void Camera::castRays(vector<sf::RectangleShape*> &colliders){
 }
 
 void Camera::drawIn(sf::RenderWindow &window, bool debug) const{
+    // Drawing the camera's view cone
     sf::VertexArray viewCone(sf::PrimitiveType::TriangleFan, view.size()+1);
     viewCone[0] = this->pos;
 
     for (short unsigned i=1; i<(rayEndpoints.size()+1); i++){
         viewCone[i] = *rayEndpoints[i-1];
     }
-
     window.draw(viewCone);
-    
+
+    // Drawing the nearest collision point to the camera
+    Ray *iter = view[0];
+    double minLength = iter->euclideanDistanceToCollision();
+
+    for (unsigned i=1; i<view.size(); i++){
+        minLength = min(minLength, view[i]->euclideanDistanceToCollision());
+        if (view[i]->euclideanDistanceToCollision() == minLength){
+            iter = view[i];
+        }
+    }
+
+    sf::Vector2f lr = iter->makeDrawable()[1].position;
+    sf::CircleShape c(10, 30ul);
+    c.setFillColor(sf::Color::Cyan);
+    c.setPosition(lr - sf::Vector2f(c.getRadius(), c.getRadius()));
+    window.draw(c);
+
+    // Drawing the camera's body
     window.draw(body);
     
     if (debug){
