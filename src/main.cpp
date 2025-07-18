@@ -1,5 +1,6 @@
 #include "Ray.hpp"
 #include "Camera.hpp"
+#include "Renderer.hpp"
 using namespace std;
 
 // Distance moved by the camera for every frame where the necessary key is pressed
@@ -19,6 +20,9 @@ int main(){
     Camera testCamera = Camera(sf::Vector2f(100, 100), sf::Vector2f(win.getSize()), 30, 500u);
     testCamera.rotate(200);
 
+    Renderer mainRenderer(testCamera, sf::Vector2f(500, 200), 
+                            sf::Vector2f(win.getSize().x - 500, 0));
+
     vector<vector<unsigned>> maze = {{0, 1, 0, 1, 0, 0, 0, 1},
                                      {0, 1, 0, 1, 1, 0, 0, 0},
                                      {0, 0, 0, 0, 0, 0, 1, 1},
@@ -30,7 +34,6 @@ int main(){
 
     sf::Vector2f wall_dimensions = sf::Vector2f(win.getSize().x/maze[0].size(), 
                                                 win.getSize().y/maze.size());
-
     for (unsigned i=0; i<maze.size(); i++){
         for (unsigned j=0; j<maze[i].size(); j++){
             if (maze[i][j] == 1){
@@ -109,17 +112,19 @@ int main(){
         // Casting rays
         if (castRaysNow){
             testCamera.castRays(colliders);
+            mainRenderer.computeRenderDistances();
         }
 
         // Drawing to window
         win.clear(sf::Color::Black);
-        
-        
+
         for (unsigned long i=0; i<colliders.size(); i++){
             win.draw(*colliders[i]);
         }
         // win.draw(testRay.makeDrawable());
         testCamera.drawIn(win, false);
+
+        mainRenderer.drawRender(win);
 
         win.display();
 
