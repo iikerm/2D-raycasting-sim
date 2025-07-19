@@ -19,6 +19,7 @@ This class is a simpler class, meant to be associated with a Camera object and t
 
 All this information is represented in a view (which in the image below can be found in the top right corner), which is effectively a rendered simulation of what the camera object is *'seeing'* through its rays.
 
+## Program images:
 <img width="2733" height="1697" alt="preview image" src="https://github.com/user-attachments/assets/1a672370-077a-4af8-82d2-c3c7baaa0bfd" />
 &nbsp;&nbsp;
 
