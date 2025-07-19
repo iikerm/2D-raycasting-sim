@@ -36,6 +36,7 @@ Ray::Ray(){
     start = sf::Vector2f(0,0);
     finish = start;
 
+    collidedWithObject = false;
     length = sqrt(pow(finish.x - start.x, 2) + pow(finish.y - start.y, 2));
 
     pointNumber = pointDensity * length/100;
@@ -55,6 +56,7 @@ Ray::Ray(sf::Vector2f start, sf::Vector2f finish, const sf::Vector2f winSize){
     this->start = start;
     this->finish = finish;
 
+    collidedWithObject = false;
     length = sqrt(pow(finish.x - start.x, 2) + pow(finish.y - start.y, 2));
 
     this->winSize = winSize;
@@ -75,6 +77,7 @@ Ray::Ray(sf::Vector2f start, double angleDegrees, double lineOfSight, const sf::
     this->start = start;
     this->finish = start + sf::Vector2f(0, lineOfSight);
 
+    collidedWithObject = false;
     length = lineOfSight;
 
     pointNumber = pointDensity * length/100;
@@ -95,6 +98,7 @@ Ray::Ray(Ray& other){
     this->winSize = other.winSize;
     this->length = other.length;
 
+    collidedWithObject = other.collidedWithObject;
     pointNumber = other.pointNumber;
     points = new sf::Vector2f[pointNumber];
 
@@ -260,6 +264,7 @@ void Ray::castIt(vector<sf::RectangleShape*> colliders){
                 }else{
                     pointInCollision = i-1;
                 }
+                collidedWithObject = false;
                 return;
 
             }else{
@@ -271,6 +276,7 @@ void Ray::castIt(vector<sf::RectangleShape*> colliders){
                     }else{
                         pointInCollision = i-1;
                     }
+                    collidedWithObject = true;
                     return;
                 }
             }

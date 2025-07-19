@@ -13,6 +13,7 @@ class Ray{
     private:
         double length;
         sf::Vector2f pointDistance;     // Distance from one point in the ray to the next
+        bool collidedWithObject;
     
     public:
         constexpr static double pointDensity = 24.f;   // Points in the ray for every 100px of distance
@@ -46,6 +47,7 @@ class Ray{
         const sf::VertexArray makeDrawable() const;
 
         const double getLength() const {return length;}
+        const bool getCollidedWithObject() const {return collidedWithObject;}
         double euclideanDistanceToCollision();
 };
 
