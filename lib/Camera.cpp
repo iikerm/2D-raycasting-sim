@@ -109,6 +109,8 @@ void Camera::rotate(double angle){
     if(this->rotation >= 360){
         // This calculations are equal to using this->rotation % 360
         this->rotation = this->rotation - 360*((int)(this->rotation / 360));
+    }else if (this->rotation < 0){
+        this->rotation = 360 + this->rotation;
     }
 }
 
