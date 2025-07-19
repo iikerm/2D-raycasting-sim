@@ -4,12 +4,14 @@
 using namespace std;
 
 // Distance moved by the camera for every frame where the necessary key is pressed
-constexpr double DISTANCE_MOVED = 20;
+constexpr double DISTANCE_MOVED = 15;
 
 // Angle by which the camera will rotate for every frame where the necessary key is pressed
 constexpr double ANGLE_ROTATED = 2;
 
 constexpr unsigned short MAX_FPS = 120;  // Maximum framerate allowed for the main window
+
+const string FONT_PATH = "fonts/pixel-font.ttf";
 
 
 int main(){
@@ -23,11 +25,11 @@ int main(){
     Renderer mainRenderer(testCamera, sf::Vector2f(500, 200), 
                             sf::Vector2f(win.getSize().x - 500, 0));
 
-    vector<vector<unsigned>> maze = {{0, 1, 0, 1, 0, 0, 0, 1},
+    vector<vector<unsigned>> maze = {{0, 0, 0, 1, 0, 0, 0, 1},
                                      {0, 1, 0, 1, 1, 0, 0, 0},
                                      {0, 0, 0, 0, 0, 0, 1, 1},
                                      {1, 1, 1, 0, 0, 1, 1, 0},
-                                     {0, 0, 0, 0, 0, 1, 0, 0}};
+                                     {1, 0, 0, 0, 0, 1, 0, 0}};
 
     vector<sf::RectangleShape*> colliders;
     sf::RectangleShape* maze_wall;
@@ -46,6 +48,21 @@ int main(){
         }
     }
 
+    sf::Font cameraInfoFont;
+    if (!cameraInfoFont.loadFromFile(FONT_PATH)){
+        cerr << "Unable to load font from: " << FONT_PATH << endl;
+    }
+
+sf::Text cameraInfo("Angle of vision: "
+                    + to_string(static_cast<int>(testCamera.getViewAngle()))
+                    + " deg\nNumber of rays: "
+                    + to_string(testCamera.getRayAmount()) 
+                    + "\n180"
+                    + " fps", cameraInfoFont, 30u);
+    cameraInfo.setFillColor(sf::Color(246, 175, 90));
+    cameraInfo.setPosition(5, 5);
+    cameraInfo.setOutlineColor(sf::Color::Black);
+    cameraInfo.setOutlineThickness(1);
 
     sf::Clock fpsClock;
     fpsClock.restart();
@@ -65,10 +82,20 @@ int main(){
         fpsCount++;
         if (fpsCount == 100){
             unsigned t = fpsClock.getElapsedTime().asMilliseconds();
-            cout << t << "ms since last frame (" << 100.f / (double)(t * 1.f/1000.f) << "fps)" << endl;
+            double fps = 100.f / (double)(t * 1.f/1000.f);
+            // cout << t << "ms since last frame (" << fps << "fps)" << endl;
             fpsCount = 0;
             fpsClock.restart();
+
+            cameraInfo.setString("Angle of vision: "
+                                + to_string(static_cast<int>(testCamera.getViewAngle()))
+                                + " deg\nNumber of rays: "
+                                + to_string(testCamera.getRayAmount()) 
+                                + "\n"
+                                + to_string(static_cast<int>(fps))
+                                + " fps");
         }
+
 
         sf::Event event;
         while (win.pollEvent(event)){
@@ -125,6 +152,9 @@ int main(){
         testCamera.drawIn(win, false);
 
         mainRenderer.drawRender(win);
+        mainRenderer.drawRenderInfo(FONT_PATH, win);
+
+        win.draw(cameraInfo);
 
         win.display();
 
