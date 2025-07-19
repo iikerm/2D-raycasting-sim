@@ -62,15 +62,25 @@ void Renderer::drawRender(sf::RenderWindow &win){
     borders.setFillColor(sf::Color::Black);
     win.draw(borders);
     
-    for (unsigned i=0; i<cam->view.size(); i++){
+    for (double i=0; i<cam->view.size(); i+=(((double)cam->rayAmount) / size.x)){
+        unsigned idx = static_cast<int>(i);
+
+        if (static_cast<double>(idx) != i){
+            // If i is not a whole number, we ignore this iteration
+            // i.e. 1.00 != 1.33
+            continue;
+        }
+
         sf::RectangleShape line(sf::Vector2f(max(1.f, size.x / cam->rayAmount), size.y));
-        if (!cam->view[i]->getCollidedWithObject()){
+        if (!cam->view[idx]->getCollidedWithObject()){
             line.setFillColor(sf::Color::Black);
         }else{
             line.setFillColor(
-                darkenByDepth(cam->view[i]->euclideanDistanceToCollision(), sf::Color(255, 0, 0))
+                darkenByDepth(cam->view[idx]->euclideanDistanceToCollision(), sf::Color(255, 0, 0))
             );
         }
+
+        // Why is it separating lines by 1px???
         line.setPosition(pos + sf::Vector2f(cam->view.size()-i * line.getSize().x, 0));
         line.setPosition(line.getPosition() - sf::Vector2f(renderBorderSize, -renderBorderSize));
         win.draw(line);
