@@ -1,16 +1,29 @@
 # 2D Raycasting and Rendering Simulator
 ## What does the title mean?
-The main idea behind this project is to make a program that can take a 'maze' composed of different objects and cast various rays of simulated light from a 'camera' that will collide in one way or another with these objects in the maze as the user moves the camera across the window. These collisions can then be interpreted according to their distance away from the camera in order to produce a dynamic image representing what the camera is seeing through its angle of vision.
+The main idea behind this project is to make a program that can take a 'maze' composed of different objects and cast various rays of simulated light from a 'camera' that will collide in one way or another with these objects in the maze as the user moves the camera across the window. These collisions can then be interpreted according to their distance away from the camera in order to produce a dynamic image (a render) that represents what the camera is seeing through its angle of vision.
 
-## Why is this something useful to do as a programmer?
-This project, as simple as it may be, helps you to focus on different approaches to find solutions for many kinds of problems, including some examples like:
-- Working with point transformations in two-dimensional space
-- Applying euclidean geometry to calculate distances
-- Improving performance by not computing idle frames
-- Choosing the best order in which things can be rendered, according to the performance of the different options available.
+## How does this program work?
+It is made up of 3 main components:
+### Rays *'of light'*
+A ray (of light in this case) represents a line going from point A to point B. This line is made up of individual points where we can check if the ray of light has collided with a solid object (i.e. the point is inside the object), and if it has, we know that the ray must only travel up to this specific point.
 
-> <img width="2736" height="1684" alt="imagen" src="https://github.com/user-attachments/assets/36838f77-e0ed-4183-98be-3cd84334953a" />
+Rays can be rotated (by applying matrix multiplication with a rotation matrix), and moved in any direction (by adding/subtracting a 2-Dimensional offset to all the points in the ray).
 
+### The Camera
+This is an object that groups rays together so that they all start from a common point. It is represented by a circle and the user of the program can control its movements by using the `WASD` keys, and its angle of rotation can be increased using the `↑ Up` arrow, and decreased using the `↓ Down` arrow.
+
+> Some optimizations, like ordering the vector of solid objects according to their distance away from the camera to improve ray collision probability, or drawing all the rays as an array of triangles instead of hundreds of lines, have been done inside some methods of this class.
+
+### The Renderer class
+This class is a simpler class, meant to be associated with a Camera object and to **render** (as its name implies) what this object is *'seeing'*. It does this by taking the distances away from the camera where each of its rays has found a collision. Using these distances, and comparing them with a reference distance is how different shades of a color (in the case of the image below: red) are produced, where darker tones indicate an object that is further away from the camera.
+
+All this information is represented in a view (which in the image below can be found in the top right corner), which is effectively a rendered simulation of what the camera object is *'seeing'* through its rays.
+
+<img width="2736" height="1684" alt="sample image" src="https://github.com/user-attachments/assets/36838f77-e0ed-4183-98be-3cd84334953a" />
+&nbsp;&nbsp;
+
+> The maze that generated the solid objects in the image above is currently hardcoded inside the `main()` function in [src/main.cpp](src/main.cpp):
+> <img width="500" height="110" alt="hardcoded maze of 1s and 0s" src="https://github.com/user-attachments/assets/a8db5f47-c6d3-4663-ace8-70f927a7f085" />
 
 ## Program dependencies
 This program was made and tested using the SFML library in version 2.6.1.
