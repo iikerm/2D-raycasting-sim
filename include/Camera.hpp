@@ -53,6 +53,7 @@ class Camera{
         const double getViewLength() const {return viewLength;}
         const unsigned short getRayAmount() const {return rayAmount;}
         const double getRotation() const {return rotation;}
+        double getMaximumDistance() const;
 };
 
 #endif

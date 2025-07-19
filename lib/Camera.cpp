@@ -163,3 +163,11 @@ void Camera::drawIn(sf::RenderWindow &window, bool debug) const{
         }
     }
 }
+
+
+double Camera::getMaximumDistance() const{
+    return max(
+        sqrt(pow(pos.x, 2) + pow(pos.y, 2)),    // distance to window origin
+        sqrt(pow(pos.x - winSize.x, 2) + pow(pos.y - winSize.y, 2))     // distance to window end coords
+    );
+}
