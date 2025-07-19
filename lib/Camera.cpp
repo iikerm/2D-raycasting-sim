@@ -132,27 +132,26 @@ void Camera::drawIn(sf::RenderWindow &window, bool debug) const{
     }
     window.draw(viewCone);
 
-    // Drawing the nearest collision point to the camera
-    Ray *iter = view[0];
-    double minLength = iter->euclideanDistanceToCollision();
-
-    for (unsigned i=1; i<view.size(); i++){
-        minLength = min(minLength, view[i]->euclideanDistanceToCollision());
-        if (view[i]->euclideanDistanceToCollision() == minLength){
-            iter = view[i];
-        }
-    }
-
-    sf::Vector2f lr = iter->makeDrawable()[1].position;
-    sf::CircleShape c(10, 30ul);
-    c.setFillColor(sf::Color::Cyan);
-    c.setPosition(lr - sf::Vector2f(c.getRadius(), c.getRadius()));
-    window.draw(c);
-
-    // Drawing the camera's body
-    window.draw(body);
     
     if (debug){
+        // Drawing the nearest collision point to the camera
+        Ray *iter = view[0];
+        double minLength = iter->euclideanDistanceToCollision();
+
+        for (unsigned i=1; i<view.size(); i++){
+            minLength = min(minLength, view[i]->euclideanDistanceToCollision());
+            if (view[i]->euclideanDistanceToCollision() == minLength){
+                iter = view[i];
+            }
+        }
+
+        sf::Vector2f lr = iter->makeDrawable()[1].position;
+        sf::CircleShape c(10, 30ul);
+        c.setFillColor(sf::Color::Cyan);
+        c.setPosition(lr - sf::Vector2f(c.getRadius(), c.getRadius()));
+        window.draw(c);
+
+        // Drawing the individual points that compose each ray
         for (int j=0; j<view.size(); j++){
             for (int i=0; i<view[j]->pointInCollision; i++){
                 sf::CircleShape pt(10, 30);
