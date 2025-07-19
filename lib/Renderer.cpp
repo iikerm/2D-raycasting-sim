@@ -1,5 +1,7 @@
 #include "Renderer.hpp"
 
+const sf::Color CAMERA_COLOR = sf::Color(246, 175, 90);       //rgb(246, 175, 90)
+
 /**
  * Call only when camera moves to avoid unnecessary calculations
  */
@@ -35,6 +37,8 @@ Renderer::Renderer(Camera &cam, sf::Vector2f size, sf::Vector2f pos){
     this->size = size;
     this->pos = pos;
 
+    this->renderBorderSize = 10.f;
+
     computeRenderDistances();
 }
 
@@ -50,13 +54,11 @@ sf::Color Renderer::darkenByDepth(double actualDepth, sf::Color original){
 }
 
 void Renderer::drawRender(sf::RenderWindow &win){
-    // for (unsigned long i=0; i<this->cam->rayEndpoints.size())
 
-    double borderSize = 10.f;
     sf::RectangleShape borders(size);
-    borders.setPosition(pos - sf::Vector2f(borderSize, -borderSize));
-    borders.setOutlineColor(sf::Color::White);
-    borders.setOutlineThickness(borderSize);
+    borders.setPosition(pos - sf::Vector2f(renderBorderSize, -renderBorderSize));
+    borders.setOutlineColor(CAMERA_COLOR);
+    borders.setOutlineThickness(renderBorderSize);
     borders.setFillColor(sf::Color::Black);
     win.draw(borders);
     
@@ -70,19 +72,29 @@ void Renderer::drawRender(sf::RenderWindow &win){
             );
         }
         line.setPosition(pos + sf::Vector2f(cam->view.size()-i * line.getSize().x, 0));
-        line.setPosition(line.getPosition() - sf::Vector2f(borderSize, -borderSize));
+        line.setPosition(line.getPosition() - sf::Vector2f(renderBorderSize, -renderBorderSize));
         win.draw(line);
     }
+}
 
-    /*
-    sf::RectangleShape minLine(sf::Vector2f(max(1.f, size.x / cam->rayAmount), size.y));
-    minLine.setPosition(pos + sf::Vector2f((cam->view.size() - minDepthIndex)*minLine.getSize().x, 0));
-    minLine.setFillColor(sf::Color::Cyan);
-    win.draw(minLine);
 
-    sf::RectangleShape maxLine(sf::Vector2f(max(1.f, size.x / cam->rayAmount), size.y));
-    maxLine.setPosition(pos + sf::Vector2f((cam->view.size() - maxDepthIndex)*maxLine.getSize().x, 0));
-    maxLine.setFillColor(sf::Color::Green);
-    win.draw(maxLine);
-    */
+void Renderer::drawRenderInfo(string fontPath, sf::RenderWindow &win){
+    sf::Font renderFont;
+    if (!renderFont.loadFromFile(fontPath)){
+        cerr << "Unable to render font at: " << fontPath << endl;
+        return;
+    }
+
+    sf::Text infoBelowDisplay("CAMERA VIEW - FACING: " 
+                                + to_string(static_cast<int>(cam->getRotation())) + " deg", 
+                                renderFont, 
+                                30u
+                            );
+    infoBelowDisplay.setFillColor(CAMERA_COLOR);
+    infoBelowDisplay.setPosition(pos + sf::Vector2f(-renderBorderSize - 7, 
+                                                    size.y + renderBorderSize + 7)
+                                );
+    infoBelowDisplay.setOutlineColor(sf::Color::Black);
+    infoBelowDisplay.setOutlineThickness(1);
+    win.draw(infoBelowDisplay);
 }

@@ -12,6 +12,7 @@ class Renderer{
         Camera *cam;
         sf::Vector2f size;
         sf::Vector2f pos;
+        double renderBorderSize;
     public:
         double minRenderedDepth;
         double maxRenderedDepth;
@@ -26,6 +27,7 @@ class Renderer{
         void computeRenderDistances();
 
         void drawRender(sf::RenderWindow &win);
+        void drawRenderInfo(string fontPath, sf::RenderWindow &win);
 };
 
 #endif
