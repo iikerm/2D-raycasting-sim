@@ -9,6 +9,9 @@ This project, as simple as it may be, helps you to focus on different approaches
 - Improving performance by not computing idle frames
 - Choosing the best order in which things can be rendered, according to the performance of the different options available.
 
+> <img width="2736" height="1684" alt="imagen" src="https://github.com/user-attachments/assets/36838f77-e0ed-4183-98be-3cd84334953a" />
+
+
 ## Program dependencies
 This program was made and tested using the SFML library in version 2.6.1.
 >[!NOTE]
