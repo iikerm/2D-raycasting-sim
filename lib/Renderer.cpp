@@ -40,11 +40,12 @@ Renderer::Renderer(Camera &cam, sf::Vector2f size, sf::Vector2f pos){
 
 sf::Color Renderer::darkenByDepth(double actualDepth, sf::Color original){
     // original will be the brightest color
+    double maxValue = cam->getMaximumDistance();
 
     return sf::Color(
-        original.r * (1 - (actualDepth/maxRenderedDepth)),
-        original.g * (1 - (actualDepth/maxRenderedDepth)),
-        original.b * (1 - (actualDepth/maxRenderedDepth))
+        original.r * (1 - ((actualDepth)/(maxValue*2))),
+        original.g * (1 - ((actualDepth)/(maxValue*2))),
+        original.b * (1 - ((actualDepth)/(maxValue*2)))
     );
 }
 
@@ -61,9 +62,13 @@ void Renderer::drawRender(sf::RenderWindow &win){
     
     for (unsigned i=0; i<cam->view.size(); i++){
         sf::RectangleShape line(sf::Vector2f(max(1.f, size.x / cam->rayAmount), size.y));
-        line.setFillColor(
-            darkenByDepth(cam->view[i]->euclideanDistanceToCollision(), sf::Color(0, 0, 255))
-        );
+        if (!cam->view[i]->getCollidedWithObject()){
+            line.setFillColor(sf::Color::Black);
+        }else{
+            line.setFillColor(
+                darkenByDepth(cam->view[i]->euclideanDistanceToCollision(), sf::Color(255, 0, 0))
+            );
+        }
         line.setPosition(pos + sf::Vector2f(cam->view.size()-i * line.getSize().x, 0));
         line.setPosition(line.getPosition() - sf::Vector2f(borderSize, -borderSize));
         win.draw(line);
