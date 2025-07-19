@@ -39,7 +39,7 @@ void Camera::setupBody(){
     body = sf::CircleShape(100, 30ul);
     body.setPosition(pos - sf::Vector2f(body.getRadius(), body.getRadius()));
 
-    body.setFillColor(sf::Color(253, 146, 16));       // #fd9210
+    body.setFillColor(sf::Color(246, 175, 90));       // #f6af5a
 }
 
 Camera::Camera(const sf::Vector2f winSize){
@@ -131,6 +131,8 @@ void Camera::drawIn(sf::RenderWindow &window, bool debug) const{
         viewCone[i] = *rayEndpoints[i-1];
     }
     window.draw(viewCone);
+
+    window.draw(body);
 
     
     if (debug){
