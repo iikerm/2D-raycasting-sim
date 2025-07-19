@@ -19,7 +19,7 @@ This class is a simpler class, meant to be associated with a Camera object and t
 
 All this information is represented in a view (which in the image below can be found in the top right corner), which is effectively a rendered simulation of what the camera object is *'seeing'* through its rays.
 
-<img width="2736" height="1684" alt="sample image" src="https://github.com/user-attachments/assets/36838f77-e0ed-4183-98be-3cd84334953a" />
+<img width="2733" height="1697" alt="preview image" src="https://github.com/user-attachments/assets/1a672370-077a-4af8-82d2-c3c7baaa0bfd" />
 &nbsp;&nbsp;
 
 > The maze that generated the solid objects in the image above is currently hardcoded inside the `main()` function in [src/main.cpp](src/main.cpp):
