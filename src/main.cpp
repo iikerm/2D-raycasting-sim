@@ -19,7 +19,7 @@ int main(){
     win.setFramerateLimit(MAX_FPS);
 
     // Ray testRay = Ray(sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1300));
-    Camera testCamera = Camera(sf::Vector2f(100, 100), sf::Vector2f(win.getSize()), 50, 500u);
+    Camera testCamera = Camera(sf::Vector2f(100, 100), sf::Vector2f(win.getSize()), 50, 1000u);
     testCamera.rotate(200);
 
     Renderer mainRenderer(testCamera, sf::Vector2f(500, 200), 
