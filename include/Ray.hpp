@@ -16,7 +16,7 @@ class Ray{
         bool collidedWithObject;
     
     public:
-        constexpr static double pointDensity = 24.f;   // Points in the ray for every 100px of distance
+        constexpr static double pointDensity = 30.f;   // Points in the ray for every 100px of distance
         short unsigned pointNumber;  // Number of points that the ray is "composed of"
         sf::Vector2f* points;
         sf::Vector2f start;
