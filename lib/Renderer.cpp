@@ -62,6 +62,7 @@ void Renderer::drawRender(sf::RenderWindow &win){
     borders.setFillColor(sf::Color::Black);
     win.draw(borders);
     
+    unsigned lineIndex=0;
     for (double i=0; i<cam->view.size(); i+=(((double)cam->rayAmount) / size.x)){
         unsigned idx = static_cast<int>(i);
 
@@ -79,11 +80,11 @@ void Renderer::drawRender(sf::RenderWindow &win){
                 darkenByDepth(cam->view[idx]->euclideanDistanceToCollision(), sf::Color(255, 0, 0))
             );
         }
-
-        // Why is it separating lines by 1px???
-        line.setPosition(pos + sf::Vector2f(cam->view.size()-i * line.getSize().x, 0));
+        
+        line.setPosition(pos + sf::Vector2f((size.x-lineIndex) * line.getSize().x, 0));
         line.setPosition(line.getPosition() - sf::Vector2f(renderBorderSize, -renderBorderSize));
         win.draw(line);
+        lineIndex++;
     }
 }
 
