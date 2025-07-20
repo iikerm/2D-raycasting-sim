@@ -1,4 +1,5 @@
 #include "Renderer.hpp"
+#include <cmath>
 
 const sf::Color CAMERA_COLOR = sf::Color(246, 175, 90);       //rgb(246, 175, 90)
 
@@ -59,16 +60,22 @@ void Renderer::drawRender(sf::RenderWindow &win){
     borders.setPosition(pos - sf::Vector2f(renderBorderSize, -renderBorderSize));
     borders.setOutlineColor(CAMERA_COLOR);
     borders.setOutlineThickness(renderBorderSize);
-    borders.setFillColor(sf::Color::Black);
+    borders.setFillColor(CAMERA_COLOR);
     win.draw(borders);
     
     unsigned lineIndex=0;
-    for (double i=0; i<cam->view.size(); i+=(((double)cam->rayAmount) / size.x)){
-        unsigned idx = static_cast<int>(i);
+    double step = (((double)cam->rayAmount) / size.x) + 0.001;
+    sf::Vector2f linePosition;
+    unsigned previousIdx=1;
 
-        if (static_cast<double>(idx) != i){
-            // If i is not a whole number, we ignore this iteration
-            // i.e. 1.00 != 1.33
+    for (double i=0; i<cam->view.size(); i+=step){
+        unsigned idx = static_cast<int>(i);
+        
+        if (static_cast<double>(idx) == i){
+            continue;
+        }
+        if (previousIdx == idx){
+            // To ensure that each cam->view[] point is rendered only once
             continue;
         }
 
@@ -80,11 +87,15 @@ void Renderer::drawRender(sf::RenderWindow &win){
                 darkenByDepth(cam->view[idx]->euclideanDistanceToCollision(), sf::Color(255, 0, 0))
             );
         }
-        
-        line.setPosition(pos + sf::Vector2f((size.x-lineIndex) * line.getSize().x, 0));
-        line.setPosition(line.getPosition() - sf::Vector2f(renderBorderSize, -renderBorderSize));
+
+        linePosition = sf::Vector2f(size.x-(lineIndex*line.getSize().x), 0);
+        linePosition += pos - sf::Vector2f(renderBorderSize + line.getSize().x, -renderBorderSize);
+        line.setPosition(linePosition);
         win.draw(line);
+
         lineIndex++;
+
+        previousIdx = idx;
     }
 }
 
