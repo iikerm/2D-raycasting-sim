@@ -9,8 +9,13 @@ constexpr double DISTANCE_MOVED = 15;
 // Angle by which the camera will rotate for every frame where the necessary key is pressed
 constexpr double ANGLE_ROTATED = 2;
 
-constexpr unsigned short MAX_FPS = 120;  // Maximum framerate allowed for the main window
+// Maximum framerate allowed for the main window
+constexpr unsigned short MAX_FPS = 120;
 
+// The fps that the program is running at will be calculated once every n frames
+constexpr unsigned short CHECK_FPS_EVERY_N_FRAMES = 10;
+
+// Path to the font file used to render the information texts
 const string FONT_PATH = "fonts/pixel-font.ttf";
 
 
@@ -18,12 +23,11 @@ int main(){
     sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
     win.setFramerateLimit(MAX_FPS);
 
-    // Ray testRay = Ray(sf::Vector2f(1000, 1000), sf::Vector2f(1000, 1300));
     Camera testCamera = Camera(sf::Vector2f(100, 100), sf::Vector2f(win.getSize()), 50, 1000u);
     testCamera.rotate(200);
 
     Renderer mainRenderer(testCamera, sf::Vector2f(500, 200), 
-                            sf::Vector2f(win.getSize().x - 500, 0));
+                            sf::Vector2f(win.getSize().x - 1000, 0));
 
     vector<vector<unsigned>> maze = {{0, 0, 0, 1, 0, 0, 0, 1},
                                      {0, 1, 0, 1, 1, 0, 0, 0},
@@ -53,12 +57,12 @@ int main(){
         cerr << "Unable to load font from: " << FONT_PATH << endl;
     }
 
-sf::Text cameraInfo("Angle of vision: "
-                    + to_string(static_cast<int>(testCamera.getViewAngle()))
-                    + " deg\nNumber of rays: "
-                    + to_string(testCamera.getRayAmount()) 
-                    + "\n180"
-                    + " fps", cameraInfoFont, 30u);
+    sf::Text cameraInfo("Angle of vision: "
+                        + to_string(static_cast<int>(testCamera.getViewAngle()))
+                        + " deg\nNumber of rays: "
+                        + to_string(testCamera.getRayAmount()) 
+                        + "\n Capped at" + to_string(MAX_FPS)
+                        + " fps max", cameraInfoFont, 30u);
     cameraInfo.setFillColor(sf::Color(246, 175, 90));
     cameraInfo.setPosition(5, 5);
     cameraInfo.setOutlineColor(sf::Color::Black);
@@ -80,9 +84,9 @@ sf::Text cameraInfo("Angle of vision: "
         
         // Shows FPS (for performance improvements)
         fpsCount++;
-        if (fpsCount == 100){
+        if (fpsCount == 10){
             unsigned t = fpsClock.getElapsedTime().asMilliseconds();
-            double fps = 100.f / (double)(t * 1.f/1000.f);
+            double fps = 10.f / (double)(t / 1000.f);
             // cout << t << "ms since last frame (" << fps << "fps)" << endl;
             fpsCount = 0;
             fpsClock.restart();
