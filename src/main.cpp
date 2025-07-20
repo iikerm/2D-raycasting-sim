@@ -13,7 +13,7 @@ constexpr double ANGLE_ROTATED = 2;
 constexpr unsigned short MAX_FPS = 120;
 
 // The fps that the program is running at will be calculated once every n frames
-constexpr unsigned short CHECK_FPS_EVERY_N_FRAMES = 10;
+constexpr unsigned short CHECK_FPS_EVERY_N_FRAMES = 30;
 
 // Path to the font file used to render the information texts
 const string FONT_PATH = "fonts/pixel-font.ttf";
@@ -23,11 +23,11 @@ int main(){
     sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
     win.setFramerateLimit(MAX_FPS);
 
-    Camera testCamera = Camera(sf::Vector2f(100, 100), sf::Vector2f(win.getSize()), 50, 1000u);
+    Camera testCamera = Camera(sf::Vector2f(100, 100), sf::Vector2f(win.getSize()), 50, 200u);
     testCamera.rotate(200);
 
     Renderer mainRenderer(testCamera, sf::Vector2f(500, 200), 
-                            sf::Vector2f(win.getSize().x - 1000, 0));
+                            sf::Vector2f(win.getSize().x - 500, 0));
 
     vector<vector<unsigned>> maze = {{0, 0, 0, 1, 0, 0, 0, 1},
                                      {0, 1, 0, 1, 1, 0, 0, 0},
