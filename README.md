@@ -20,16 +20,18 @@ This class is a simpler class, meant to be associated with a Camera object and t
 All this information is represented in a view (which in the image below can be found in the top right corner), which is effectively a rendered simulation of what the camera object is *'seeing'* through its rays.
 
 ## Program images:
-<img width="2733" height="1697" alt="preview image" src="https://github.com/user-attachments/assets/1a672370-077a-4af8-82d2-c3c7baaa0bfd" />
+<img width="2736" height="1703" alt="imagen" src="https://github.com/user-attachments/assets/60b1535d-97c8-479a-a524-253612b1f6c1" />
+
 &nbsp;&nbsp;
 
 > The maze that generated the solid objects in the image above is currently hardcoded inside the `main()` function in [src/main.cpp](src/main.cpp):
 > <img width="500" height="110" alt="hardcoded maze of 1s and 0s" src="https://github.com/user-attachments/assets/a8db5f47-c6d3-4663-ace8-70f927a7f085" />
 
+
 ## Program dependencies
 This program was made and tested using the SFML library in version 2.6.1.
 >[!NOTE]
->When writing this, the latest SFML version available is v3.0.0, but there should be no problems when compiling with this version.
+>When writing this, the latest SFML version available is v3.0.0, but there should be no problems when compiling with said newer version.
 
 To install it, in Ubuntu and other linux distros with the `apt` packet manager, one can use:  
 ```bash
