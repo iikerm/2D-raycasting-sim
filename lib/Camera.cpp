@@ -61,6 +61,12 @@ Camera::Camera(sf::Vector2f pos,
                unsigned short rayAmount){
     
     this->pos = pos;
+    
+    if (viewAngle > 360.f || viewAngle < 1){
+        cerr << "Invalid angle provided (must be in the interval [1, 360]): " << to_string(viewAngle);
+        exit(EXIT_FAILURE);
+    }
+
     this->viewAngle = viewAngle;
     this->viewLength = max(winSize.x, winSize.y)*2;
     this->rayAmount = rayAmount;
