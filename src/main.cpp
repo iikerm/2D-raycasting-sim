@@ -1,6 +1,7 @@
 #include "Ray.hpp"
 #include "Camera.hpp"
 #include "Renderer.hpp"
+#include <cmath>
 using namespace std;
 
 // Distance moved by the camera for every frame where the necessary key is pressed
@@ -57,10 +58,12 @@ int main(){
         cerr << "Unable to load font from: " << FONT_PATH << endl;
     }
 
-    sf::Text cameraInfo("Angle of vision: "
+    sf::Text cameraInfo("Ray point density (per 100px): "
+                        + to_string((int)Ray::pointDensity)
+                        +"\nAngle of vision: "
                         + to_string(static_cast<int>(testCamera.getViewAngle()))
                         + " deg\nNumber of rays: "
-                        + to_string(testCamera.getRayAmount()) 
+                        + to_string(testCamera.getRayAmount())
                         + "\n Capped at" + to_string(MAX_FPS)
                         + " fps max", cameraInfoFont, 30u);
     cameraInfo.setFillColor(sf::Color(246, 175, 90));
@@ -91,7 +94,9 @@ int main(){
             fpsCount = 0;
             fpsClock.restart();
 
-            cameraInfo.setString("Angle of vision: "
+            cameraInfo.setString("Ray point density (per 100px): "
+                                + to_string((int)Ray::pointDensity)
+                                + "\nAngle of vision: "
                                 + to_string(static_cast<int>(testCamera.getViewAngle()))
                                 + " deg\nNumber of rays: "
                                 + to_string(testCamera.getRayAmount()) 
