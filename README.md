@@ -27,6 +27,23 @@ All this information is represented in a view (which in the image below can be f
 > The maze that generated the solid objects in the image above is currently hardcoded inside the `main()` function in [src/main.cpp](src/main.cpp):
 > <img width="500" height="110" alt="hardcoded maze of 1s and 0s" src="https://github.com/user-attachments/assets/a8db5f47-c6d3-4663-ace8-70f927a7f085" />
 
+## Parameter adjusting
+One aim of this program was (among others) to see the differences in output quality produced when changing a parameter out of a set of adjustable elements among the various objects. You will find indicated below what each parameter does, and where they are found in the code so that one can play around with them.
+
+### Camera View Angle ([`main.cpp`](src/main.cpp))
+This parameter is set by default to 50° (degrees), and it changes how wide the camera spreads its rays (up to a maximum of 360° and minimum of 1°).
+
+Changing this parameter doesn't directly affect performance (because increasing it just makes rays be more spaced out), but if it is increased without doing so with the camera's ray amount as well, the quality of the output decreases.
+
+### Camera Ray Amount ([`main.cpp`](src/main.cpp))
+This parameter is set by default to 200, and it specifies the amount of rays (spaced evenly) that will be present inside the camera's view angle.
+
+This parameter is inversely proportional to performance (i.e. increasing it decreases performance), however only increases at lower values are noticeable in terms of quality. For my specific screen size, any further increases after 200 rays were barely noticeable in terms of quality, but they were performancewise.
+
+### Ray point density ([`Ray.hpp`](include/Ray.hpp))
+This parameter specifies the number of points where the ray can check for a collision for every 100px of ray that is drawn. It is set by default to 60 points per 100px.
+
+It is inversely proportional to performance (i.e. increasing it decreases performance) and an increase at lower values has a big impact on the quality of the output produced, although after a certain threshold (around 30-40) any further increase is almost unnoticeable in terms of quality increase.
 
 ## Program dependencies
 This program was made and tested using the SFML library in version 2.6.1.
