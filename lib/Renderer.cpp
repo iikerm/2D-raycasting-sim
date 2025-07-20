@@ -84,7 +84,7 @@ void Renderer::drawRender(sf::RenderWindow &win){
             line.setFillColor(sf::Color::Black);
         }else{
             line.setFillColor(
-                darkenByDepth(cam->view[idx]->euclideanDistanceToCollision(), sf::Color(255, 0, 0))
+                darkenByDepth(cam->view[idx]->euclideanDistanceToCollision(), sf::Color::Red)
             );
         }
 
