@@ -20,11 +20,18 @@ constexpr unsigned short CHECK_FPS_EVERY_N_FRAMES = 30;
 const string FONT_PATH = "fonts/pixel-font.ttf";
 
 
+constexpr double CAMERA_VIEW_ANGLE = 50.f;    // View angle of the camera in degrees
+constexpr unsigned CAMERA_RAY_AMOUNT = 200u; // Amount of rays coming out of the camera
+
+
 int main(){
     sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
     win.setFramerateLimit(MAX_FPS);
 
-    Camera testCamera = Camera(sf::Vector2f(100, 100), sf::Vector2f(win.getSize()), 50, 200u);
+    Camera testCamera = Camera(sf::Vector2f(100, 100), 
+                               sf::Vector2f(win.getSize()), 
+                               CAMERA_VIEW_ANGLE, 
+                               CAMERA_RAY_AMOUNT);
     testCamera.rotate(200);
 
     Renderer mainRenderer(testCamera, sf::Vector2f(500, 200), 
