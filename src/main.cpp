@@ -178,5 +178,10 @@ int main(){
         castRaysNow = false;
     }
 
+    // Freeing memory from the colliders vector
+    for (long unsigned i=0; i<colliders.size(); i++){
+        delete colliders[i];
+    }
+
     return 0;
 }
