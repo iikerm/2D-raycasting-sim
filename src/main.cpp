@@ -84,9 +84,9 @@ int main(){
         
         // Shows FPS (for performance improvements)
         fpsCount++;
-        if (fpsCount == 10){
+        if (fpsCount == CHECK_FPS_EVERY_N_FRAMES){
             unsigned t = fpsClock.getElapsedTime().asMilliseconds();
-            double fps = 10.f / (double)(t / 1000.f);
+            double fps = ((double)CHECK_FPS_EVERY_N_FRAMES) / (double)(t / 1000.f);
             // cout << t << "ms since last frame (" << fps << "fps)" << endl;
             fpsCount = 0;
             fpsClock.restart();
