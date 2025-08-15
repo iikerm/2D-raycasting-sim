@@ -25,6 +25,7 @@ All this information is represented in a view (which in the image below can be f
 &nbsp;&nbsp;
 
 > The maze that generated the solid objects in the image above is currently hardcoded inside the `main()` function in [src/main.cpp](src/main.cpp):
+> 
 > <img width="500" height="110" alt="hardcoded maze of 1s and 0s" src="https://github.com/user-attachments/assets/a8db5f47-c6d3-4663-ace8-70f927a7f085" />
 
 ## Parameter adjusting
@@ -69,4 +70,4 @@ In case you want to tweak the program's parameters, or change it for any other r
 After this, the binary called `main` in the `bin` folder will reflect the changes you made to the code.
 
 > [!NOTE]
-> For compilation and testing in windows, see [Compile_Windows.md](Compile_Windows.md) (not done yet).
+> The compilation process in windows is more complex than the one for ubuntu, but detailed instructions are included in the file [COMPILE_WIN.md](COMPILE_WIN.md).
