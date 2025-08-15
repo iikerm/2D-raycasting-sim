@@ -1,4 +1,3 @@
-# Intro
 These are the steps that I followed in order to compile my program for windows using Microsoft Visual Studio 2022 and its packet manager (vcpkg).
 
 # How to compile for windows (dynamically)
