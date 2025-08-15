@@ -1,8 +1,5 @@
 # Intro
-For this program to be able to compile in windows, 
-I had to painfully research a lot of websites in order 
-to find a method that worked for me, and now I will share 
-it so that you don't have the same problems as I did
+These are the steps that I followed in order to compile my program for windows using Microsoft Visual Studio 2022 and its packet manager (vcpkg).
 
 # How to compile for windows (dynamically)
 First of all, we are going to install **Visual Studio 2022** and 
@@ -43,7 +40,7 @@ In case that you want to link the libraries statically (.exe file weighs more, b
 - SFML Graphics: `opengl32.lib` and `freetype.lib`
 - SFML Window: `opengl32.lib`, `winmm.lib` and `gdi32.lib`
 - SFML System: `winmm.lib`
-> They don't need to be repeated, it is enough with adding each one a single time. They must each be added on their own in a new line. You can visit [this](https://www.sfml-dev.org/tutorials/2.6/start-vc.php) page to see a full list of dependencies for all of the SFML libraries
+> They don't need to be repeated, it is enough with adding each one a single time. They must each be added on their own in a new line. You can visit [this](https://www.sfml-dev.org/tutorials/3.0/getting-started/visual-studio/#creating-and-configuring-an-sfml-project) page to see a full list of dependencies for all of the SFML libraries
 
 Now your project can be compiled statically!
 
