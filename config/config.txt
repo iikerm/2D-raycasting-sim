@@ -1,0 +1,17 @@
+# Camera movement speed in pixels per frame
+camera_mov_speed = 10
+
+# Camera rotation speed in degrees per frame
+camera_rotation_speed = 2
+
+# Camera field of view (fov)
+camera_fov_deg = 50
+
+# Amount of rays coming out of the camera
+camera_ray_amt = 200
+
+# Radius of the camera's body
+camera_radius = 50
+
+# Maximum fps
+max_fps = 120
