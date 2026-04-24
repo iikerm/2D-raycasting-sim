@@ -102,14 +102,14 @@ void Renderer::drawRender(sf::RenderWindow &win){
 
 void Renderer::drawRenderInfo(string fontPath, sf::RenderWindow &win){
     sf::Font renderFont;
-    if (!renderFont.loadFromFile(fontPath)){
+    if (!renderFont.openFromFile(fontPath)){
         cerr << "Unable to render font at: " << fontPath << endl;
         return;
     }
 
-    sf::Text infoBelowDisplay("CAMERA VIEW - FACING: " 
+    sf::Text infoBelowDisplay(renderFont, 
+                                "CAMERA VIEW - FACING: " 
                                 + to_string(static_cast<int>(cam->getRotation())) + " deg", 
-                                renderFont, 
                                 30u
                             );
     infoBelowDisplay.setFillColor(CAMERA_COLOR);

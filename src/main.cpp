@@ -53,7 +53,7 @@ int main(){
             if (maze[i][j] == 1){
                 maze_wall = new sf::RectangleShape(wall_dimensions);
                 maze_wall->setFillColor(sf::Color::Red);
-                maze_wall->setPosition(wall_dimensions.x*j, wall_dimensions.y*i);
+                maze_wall->setPosition(sf::Vector2f(wall_dimensions.x*j, wall_dimensions.y*i));
 
                 colliders.push_back(maze_wall);
             }
@@ -61,20 +61,22 @@ int main(){
     }
 
     sf::Font cameraInfoFont;
-    if (!cameraInfoFont.loadFromFile(FONT_PATH)){
+    if (!cameraInfoFont.openFromFile(FONT_PATH)){
         cerr << "Unable to load font from: " << FONT_PATH << endl;
     }
 
-    sf::Text cameraInfo("Ray point density (per 100px): "
+    sf::Text cameraInfo(cameraInfoFont, 
+                        "Ray point density (per 100px): "
                         + to_string((int)Ray::pointDensity)
                         +"\nAngle of vision: "
                         + to_string(static_cast<int>(testCamera.getViewAngle()))
                         + " deg\nNumber of rays: "
                         + to_string(testCamera.getRayAmount())
                         + "\n Capped at" + to_string(MAX_FPS)
-                        + " fps max", cameraInfoFont, 30u);
+                        + " fps max", 30u);
+    
     cameraInfo.setFillColor(sf::Color(246, 175, 90));
-    cameraInfo.setPosition(5, 5);
+    cameraInfo.setPosition(sf::Vector2f(5, 5));
     cameraInfo.setOutlineColor(sf::Color::Black);
     cameraInfo.setOutlineThickness(1);
 
@@ -113,28 +115,27 @@ int main(){
         }
 
 
-        sf::Event event;
-        while (win.pollEvent(event)){
-            if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))){
+        while (const std::optional<sf::Event> event = win.pollEvent()){
+            if (event->is<sf::Event::Closed>() || (event->is<sf::Event::KeyPressed>() && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))){
                 win.close();
             }
         }
 
         // Direction controls
         if (moveClock.getElapsedTime().asMicroseconds() > 10000){
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
                 testCamera.move(sf::Vector2f(-DISTANCE_MOVED, 0), colliders);
                 castRaysNow = true;
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
                 testCamera.move(sf::Vector2f(DISTANCE_MOVED, 0), colliders);
                 castRaysNow = true;
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)){
                 testCamera.move(sf::Vector2f(0, -DISTANCE_MOVED), colliders);
                 castRaysNow = true;
             }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)){
                 testCamera.move(sf::Vector2f(0, DISTANCE_MOVED), colliders);
                 castRaysNow = true;
             }
@@ -143,11 +144,11 @@ int main(){
 
 
         // Rotation controls
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)){
             testCamera.rotate(ANGLE_ROTATED);
             castRaysNow = true;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)){
             testCamera.rotate(-ANGLE_ROTATED);
             castRaysNow = true;
         }

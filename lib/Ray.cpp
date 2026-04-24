@@ -1,6 +1,7 @@
 #include "../include/Ray.hpp"
 #include <cmath>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 Ray::~Ray(){
@@ -285,16 +286,16 @@ void Ray::castIt(vector<sf::RectangleShape*> colliders){
 }
 
 const sf::VertexArray Ray::makeDrawable() const{
-    sf::VertexArray tempVertexArray(sf::Lines, 2);
+    sf::VertexArray tempVertexArray(sf::PrimitiveType::Lines, 2);
 
-    tempVertexArray[0] = points[0];
+    tempVertexArray[0].position = points[0];
 
     if (pointInCollision < 0 || pointInCollision >= pointNumber){
         cerr << "Invalid point index in collision: " << pointInCollision << endl;
         exit(0);
     }
 
-    tempVertexArray[1] = points[pointInCollision];
+    tempVertexArray[1].position = points[pointInCollision];
     
     return tempVertexArray;
 }

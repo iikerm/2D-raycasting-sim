@@ -92,7 +92,7 @@ void Camera::move(sf::Vector2f offset, vector<sf::RectangleShape*> &colliders){
     }
 
     for (unsigned i=0; i<colliders.size(); i++){
-        if (colliders[i]->getGlobalBounds().intersects(bodyCopy.getGlobalBounds())){
+        if (colliders[i]->getGlobalBounds().findIntersection(bodyCopy.getGlobalBounds()).has_value()){
             return;
         }
     }
@@ -133,10 +133,10 @@ void Camera::castRays(vector<sf::RectangleShape*> &colliders){
 void Camera::drawIn(sf::RenderWindow &window, bool debug) const{
     // Drawing the camera's view cone
     sf::VertexArray viewCone(sf::PrimitiveType::TriangleFan, view.size()+1);
-    viewCone[0] = this->pos;
+    viewCone[0].position = this->pos;
 
     for (short unsigned i=1; i<(rayEndpoints.size()+1); i++){
-        viewCone[i] = *rayEndpoints[i-1];
+        viewCone[i].position = *rayEndpoints[i-1];
     }
     window.draw(viewCone);
 
