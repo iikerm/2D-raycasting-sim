@@ -5,7 +5,7 @@
 using namespace std;
 
 // Distance moved by the camera for every frame where the necessary key is pressed
-constexpr double DISTANCE_MOVED = 15;
+constexpr double DISTANCE_MOVED = 10;
 
 // Angle by which the camera will rotate for every frame where the necessary key is pressed
 constexpr double ANGLE_ROTATED = 2;

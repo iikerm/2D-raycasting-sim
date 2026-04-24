@@ -1,8 +1,11 @@
 #include "Camera.hpp"
 #include <cmath>
 
+// Static attributes
 const double Camera::defaultViewAngle = 30.F;
 const unsigned short Camera::defaultRayAmount = 100u;
+double Camera::bodyRadius = 50.f;
+unsigned long Camera::bodyPointCount = 30ul;
 
 Camera::~Camera(){
     for (unsigned short i=0; i<view.size(); i++){
@@ -36,7 +39,7 @@ void Camera::setupRays(const sf::Vector2f winSize){
 }
 
 void Camera::setupBody(){
-    body = sf::CircleShape(100, 30ul);
+    body = sf::CircleShape(Camera::bodyRadius, Camera::bodyPointCount);
     body.setPosition(pos - sf::Vector2f(body.getRadius(), body.getRadius()));
 
     body.setFillColor(sf::Color(246, 175, 90));       // #f6af5a
