@@ -18,5 +18,5 @@ debug: src/main.cpp $(FILES)
 $(LIBDIR)/%.o : $(LIBDIR)/%.cpp $(INCLUDEDIR)/%.hpp
 	g++ $(OPTS) $(SFML_OPTS) -c -I $(INCLUDEDIR) -o $@ $<
 
-tests: src/tests.cpp
-	g++ src/tests.cpp -o bin/tests $(SFML_OPTS) $(OPTS)
+clean:
+	rm -f $(FILES) bin/*
