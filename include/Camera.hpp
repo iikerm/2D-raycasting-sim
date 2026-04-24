@@ -33,12 +33,13 @@ class Camera{
         vector<sf::Vector2f*> rayEndpoints;
         const static double defaultViewAngle;
         const static unsigned short defaultRayAmount;
-        static double bodyRadius;
+        unsigned bodyRadius;
         static unsigned long bodyPointCount;
 
         Camera(const sf::Vector2f winSize);
         Camera(sf::Vector2f pos,
             const sf::Vector2f winSize,
+            unsigned bodyRadius,
             double viewAngle = defaultViewAngle,
             unsigned short rayAmount = defaultRayAmount);
         

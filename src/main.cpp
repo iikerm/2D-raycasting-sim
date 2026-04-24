@@ -1,35 +1,37 @@
 #include "Ray.hpp"
 #include "Camera.hpp"
 #include "Renderer.hpp"
+#include "ConfigParser.hpp"
 #include <cmath>
 using namespace std;
 
-// Distance moved by the camera for every frame where the necessary key is pressed
-constexpr double DISTANCE_MOVED = 10;
+const string FONT_PATH = "fonts/pixel-font.ttf";
+const string CONFIG_FILE = "config/config.txt";
 
-// Angle by which the camera will rotate for every frame where the necessary key is pressed
-constexpr double ANGLE_ROTATED = 2;
+unsigned DISTANCE_MOVED = 10;         // Distance moved by the camera for every frame where the necessary key is pressed
+unsigned ANGLE_ROTATED = 2;           // Angle by which the camera will rotate for every frame where the necessary key is pressed
+unsigned MAX_FPS = 120;               // Maximum framerate allowed for the main window
+unsigned CAMERA_VIEW_ANGLE = 50.f;    // View angle of the camera in degrees
+unsigned CAMERA_RAY_AMOUNT = 200u;    // Amount of rays coming out of the camera
+unsigned CAMERA_RADIUS = 50U;         // Radius of the camera's body in pixels
 
-// Maximum framerate allowed for the main window
-constexpr unsigned short MAX_FPS = 120;
+ConfigParser conf(DISTANCE_MOVED, ANGLE_ROTATED, CAMERA_VIEW_ANGLE, CAMERA_RAY_AMOUNT, CAMERA_RADIUS, MAX_FPS);
 
 // The fps that the program is running at will be calculated once every n frames
 constexpr unsigned short CHECK_FPS_EVERY_N_FRAMES = 30;
 
 // Path to the font file used to render the information texts
-const string FONT_PATH = "fonts/pixel-font.ttf";
-
-
-constexpr double CAMERA_VIEW_ANGLE = 50.f;    // View angle of the camera in degrees
-constexpr unsigned CAMERA_RAY_AMOUNT = 200u; // Amount of rays coming out of the camera
-
 
 int main(){
+    conf.load(CONFIG_FILE);
+    conf.startUpValues(DISTANCE_MOVED, ANGLE_ROTATED, CAMERA_VIEW_ANGLE, CAMERA_RAY_AMOUNT, CAMERA_RADIUS, MAX_FPS);
+
     sf::RenderWindow win(sf::VideoMode::getDesktopMode(), "Main");
     win.setFramerateLimit(MAX_FPS);
 
     Camera testCamera = Camera(sf::Vector2f(100, 100), 
                                sf::Vector2f(win.getSize()), 
+                               CAMERA_RADIUS,
                                CAMERA_VIEW_ANGLE, 
                                CAMERA_RAY_AMOUNT);
     testCamera.rotate(200);
@@ -145,11 +147,11 @@ int main(){
 
         // Rotation controls
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)){
-            testCamera.rotate(ANGLE_ROTATED);
+            testCamera.rotate(static_cast<float>(ANGLE_ROTATED));
             castRaysNow = true;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)){
-            testCamera.rotate(-ANGLE_ROTATED);
+            testCamera.rotate(-static_cast<float>(ANGLE_ROTATED));
             castRaysNow = true;
         }
 

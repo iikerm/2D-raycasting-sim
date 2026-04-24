@@ -4,7 +4,6 @@
 // Static attributes
 const double Camera::defaultViewAngle = 30.F;
 const unsigned short Camera::defaultRayAmount = 100u;
-double Camera::bodyRadius = 50.f;
 unsigned long Camera::bodyPointCount = 30ul;
 
 Camera::~Camera(){
@@ -60,10 +59,12 @@ Camera::Camera(const sf::Vector2f winSize){
 
 Camera::Camera(sf::Vector2f pos,
                const sf::Vector2f winSize,
+               unsigned bodyRadius,
                double viewAngle,
                unsigned short rayAmount){
     
     this->pos = pos;
+    this->bodyRadius = bodyRadius;
     
     if (viewAngle > 360.f || viewAngle < 1){
         cerr << "Invalid angle provided (must be in the interval [1, 360]): " << to_string(viewAngle);
