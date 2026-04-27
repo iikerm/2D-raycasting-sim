@@ -126,7 +126,7 @@ int main(){
         // Direction controls
         if (moveClock.getElapsedTime().asMicroseconds() > 10000){
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
-                testCamera.move(sf::Vector2f(-DISTANCE_MOVED, 0), colliders);
+                testCamera.move(sf::Vector2f(-static_cast<float>(DISTANCE_MOVED), 0), colliders);
                 castRaysNow = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
@@ -134,7 +134,7 @@ int main(){
                 castRaysNow = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)){
-                testCamera.move(sf::Vector2f(0, -DISTANCE_MOVED), colliders);
+                testCamera.move(sf::Vector2f(0, -static_cast<float>(DISTANCE_MOVED)), colliders);
                 castRaysNow = true;
             }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)){
